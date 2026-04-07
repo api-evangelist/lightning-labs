@@ -1,12 +1,11 @@
 aid: lightning-labs
-url: >-
+url: >2-
 
   https://raw.githubusercontent.com/api-search/lightning-labs/refs/heads/main/apis.yml
 apis:
   - aid: lightning-labs:lightning-labs
     name: Lightning Labs
-    tags:
-      - API
+    tags: []
     humanURL: https://lightning.engineering/api-docs/api/lnd/
     properties:
       - url: https://lightning.engineering/api-docs/api/lnd/
@@ -20,8 +19,8 @@ apis:
       bitcoin financial software.
 name: Lightning Labs
 tags:
-  - Crypto
   - Bitcoin
+  - Crypto
 type: Contract
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
