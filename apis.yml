@@ -7,7 +7,7 @@ description: >-
   verifiable, non-custodial Lightning-based financial services. We bridge the
   world of open source software and the next-generation of bitcoin financial
   software.
-type: Contract
+kind: contract
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
