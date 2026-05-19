@@ -1,0 +1,3304 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lightning Labs LND API — Lightning
+  description: 'Lightning Labs LND API — Lightning. 71 operations. Lead operation: lncli: `listaliases`
+
+    ListAliases returns the set of all aliases that have ever existed with
+
+    their confirmed SCID (if it exists) and/or the base SCID (in the case of
+
+    zero conf).. Self-contained Naftiko capability covering one Lightning Labs business surface.'
+  tags:
+  - Lightning Labs
+  - Lightning
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    LIGHTNING_LABS_API_KEY: LIGHTNING_LABS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: lightning-labs-lightning
+    baseUri: ''
+    description: Lightning Labs LND API — Lightning business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-aliases-list
+      path: /v1/aliases/list
+      operations:
+      - name: lightninglistaliases
+        method: GET
+        description: 'lncli: `listaliases`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-balance-blockchain
+      path: /v1/balance/blockchain
+      operations:
+      - name: lightningwalletbalance
+        method: GET
+        description: 'lncli: `walletbalance`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: account
+          in: query
+          type: string
+          description: The wallet account the balance is shown for.
+        - name: min_confs
+          in: query
+          type: integer
+          description: The minimum number of confirmations each one of your outputs used for the
+    - name: v1-balance-channels
+      path: /v1/balance/channels
+      operations:
+      - name: lightningchannelbalance
+        method: GET
+        description: 'lncli: `channelbalance`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-channels
+      path: /v1/channels
+      operations:
+      - name: lightninglistchannels
+        method: GET
+        description: 'lncli: `listchannels`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: active_only
+          in: query
+          type: boolean
+        - name: inactive_only
+          in: query
+          type: boolean
+        - name: public_only
+          in: query
+          type: boolean
+        - name: private_only
+          in: query
+          type: boolean
+        - name: peer
+          in: query
+          type: string
+          description: Filters the response for channels with a target peer's pubkey. If peer is
+        - name: peer_alias_lookup
+          in: query
+          type: boolean
+          description: Informs the server if the peer alias lookup per channel should be
+      - name: lightningopenchannelsync
+        method: POST
+        description: OpenChannelSync is a synchronous version of the OpenChannel RPC call. This
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-abandon-channel_point.funding_txid_str-channel_point.output_index
+      path: /v1/channels/abandon/{channel_point.funding_txid_str}/{channel_point.output_index}
+      operations:
+      - name: lightningabandonchannel
+        method: DELETE
+        description: 'lncli: `abandonchannel`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: channel_point.funding_txid_str
+          in: path
+          type: string
+          description: Hex-encoded string representing the byte-reversed hash of the funding
+          required: true
+        - name: channel_point.output_index
+          in: path
+          type: integer
+          description: The index of the output of the funding transaction
+          required: true
+        - name: channel_point.funding_txid_bytes
+          in: query
+          type: string
+          description: Txid of the funding transaction. When using REST, this field must be
+        - name: pending_funding_shim_only
+          in: query
+          type: boolean
+        - name: i_know_what_i_am_doing
+          in: query
+          type: boolean
+          description: Override the requirement for being in dev mode by setting this to true and
+    - name: v1-channels-acceptor
+      path: /v1/channels/acceptor
+      operations:
+      - name: lightningchannelacceptor
+        method: POST
+        description: ChannelAcceptor dispatches a bi-directional streaming RPC in which
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          description: (streaming inputs)
+          required: true
+    - name: v1-channels-backup
+      path: /v1/channels/backup
+      operations:
+      - name: lightningexportallchannelbackups
+        method: GET
+        description: ExportAllChannelBackups returns static channel backups for all existing
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-channels-backup-restore
+      path: /v1/channels/backup/restore
+      operations:
+      - name: lightningrestorechannelbackups
+        method: POST
+        description: 'lncli: `restorechanbackup`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-backup-subscribe
+      path: /v1/channels/backup/subscribe
+      operations:
+      - name: lightningsubscribechannelbackups
+        method: GET
+        description: SubscribeChannelBackups allows a client to sub-subscribe to the most up to
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-channels-backup-verify
+      path: /v1/channels/backup/verify
+      operations:
+      - name: lightningverifychanbackup
+        method: POST
+        description: 'lncli: `verifychanbackup`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-backup-chan_point.funding_txid_str-chan_point.output_index
+      path: /v1/channels/backup/{chan_point.funding_txid_str}/{chan_point.output_index}
+      operations:
+      - name: lightningexportchannelbackup
+        method: GET
+        description: 'lncli: `exportchanbackup`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: chan_point.funding_txid_str
+          in: path
+          type: string
+          description: Hex-encoded string representing the byte-reversed hash of the funding
+          required: true
+        - name: chan_point.output_index
+          in: path
+          type: integer
+          description: The index of the output of the funding transaction
+          required: true
+        - name: chan_point.funding_txid_bytes
+          in: query
+          type: string
+          description: Txid of the funding transaction. When using REST, this field must be
+    - name: v1-channels-batch
+      path: /v1/channels/batch
+      operations:
+      - name: lightningbatchopenchannel
+        method: POST
+        description: 'lncli: `batchopenchannel`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-closed
+      path: /v1/channels/closed
+      operations:
+      - name: lightningclosedchannels
+        method: GET
+        description: 'lncli: `closedchannels`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: cooperative
+          in: query
+          type: boolean
+        - name: local_force
+          in: query
+          type: boolean
+        - name: remote_force
+          in: query
+          type: boolean
+        - name: breach
+          in: query
+          type: boolean
+        - name: funding_canceled
+          in: query
+          type: boolean
+        - name: abandoned
+          in: query
+          type: boolean
+    - name: v1-channels-pending
+      path: /v1/channels/pending
+      operations:
+      - name: lightningpendingchannels
+        method: GET
+        description: 'lncli: `pendingchannels`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_raw_tx
+          in: query
+          type: boolean
+          description: Indicates whether to include the raw transaction hex for
+    - name: v1-channels-stream
+      path: /v1/channels/stream
+      operations:
+      - name: lightningopenchannel
+        method: POST
+        description: 'lncli: `openchannel`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-subscribe
+      path: /v1/channels/subscribe
+      operations:
+      - name: lightningsubscribechannelevents
+        method: GET
+        description: SubscribeChannelEvents creates a uni-directional stream from the server to
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-channels-transaction-stream
+      path: /v1/channels/transaction-stream
+      operations:
+      - name: lightningsendpayment
+        method: POST
+        description: 'lncli: `sendpayment`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          description: (streaming inputs)
+          required: true
+    - name: v1-channels-transactions
+      path: /v1/channels/transactions
+      operations:
+      - name: lightningsendpaymentsync
+        method: POST
+        description: Deprecated, use routerrpc.SendPaymentV2. SendPaymentSync is the synchronous
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-transactions-route
+      path: /v1/channels/transactions/route
+      operations:
+      - name: lightningsendtoroutesync
+        method: POST
+        description: Deprecated, use routerrpc.SendToRouteV2. SendToRouteSync is a synchronous
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-channels-channel_point.funding_txid_str-channel_point.output_index
+      path: /v1/channels/{channel_point.funding_txid_str}/{channel_point.output_index}
+      operations:
+      - name: lightningclosechannel
+        method: DELETE
+        description: 'lncli: `closechannel`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: channel_point.funding_txid_str
+          in: path
+          type: string
+          description: Hex-encoded string representing the byte-reversed hash of the funding
+          required: true
+        - name: channel_point.output_index
+          in: path
+          type: integer
+          description: The index of the output of the funding transaction
+          required: true
+        - name: channel_point.funding_txid_bytes
+          in: query
+          type: string
+          description: Txid of the funding transaction. When using REST, this field must be
+        - name: force
+          in: query
+          type: boolean
+          description: If true, then the channel will be closed forcibly. This means the
+        - name: target_conf
+          in: query
+          type: integer
+          description: The target number of blocks that the closure transaction should be
+        - name: sat_per_byte
+          in: query
+          type: string
+          description: Deprecated, use sat_per_vbyte.
+        - name: delivery_address
+          in: query
+          type: string
+          description: An optional address to send funds to in the case of a cooperative close.
+        - name: sat_per_vbyte
+          in: query
+          type: string
+          description: A manual fee rate set in sat/vbyte that should be used when crafting the
+        - name: max_fee_per_vbyte
+          in: query
+          type: string
+          description: The maximum fee rate the closer is willing to pay.
+        - name: no_wait
+          in: query
+          type: boolean
+          description: If true, then the rpc call will not block while it awaits a closing txid
+    - name: v1-chanpolicy
+      path: /v1/chanpolicy
+      operations:
+      - name: lightningupdatechannelpolicy
+        method: POST
+        description: 'lncli: `updatechanpolicy`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-custommessage
+      path: /v1/custommessage
+      operations:
+      - name: lightningsendcustommessage
+        method: POST
+        description: 'lncli: `sendcustom`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-custommessage-subscribe
+      path: /v1/custommessage/subscribe
+      operations:
+      - name: lightningsubscribecustommessages
+        method: GET
+        description: 'lncli: `subscribecustom`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-debuglevel
+      path: /v1/debuglevel
+      operations:
+      - name: lightningdebuglevel
+        method: POST
+        description: 'lncli: `debuglevel`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-fees
+      path: /v1/fees
+      operations:
+      - name: lightningfeereport
+        method: GET
+        description: 'lncli: `feereport`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-funding-step
+      path: /v1/funding/step
+      operations:
+      - name: lightningfundingstatestep
+        method: POST
+        description: FundingStateStep is an advanced funding related call that allows the caller
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-getdebuginfo
+      path: /v1/getdebuginfo
+      operations:
+      - name: lightninggetdebuginfo
+        method: GET
+        description: 'lncli: ''getdebuginfo'''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_log
+          in: query
+          type: boolean
+          description: If set to true, the log file content will be included in the response.
+    - name: v1-getinfo
+      path: /v1/getinfo
+      operations:
+      - name: lightninggetinfo
+        method: GET
+        description: 'lncli: `getinfo`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-getrecoveryinfo
+      path: /v1/getrecoveryinfo
+      operations:
+      - name: lightninggetrecoveryinfo
+        method: GET
+        description: '* lncli: `getrecoveryinfo`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-graph
+      path: /v1/graph
+      operations:
+      - name: lightningdescribegraph
+        method: GET
+        description: 'lncli: `describegraph`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_unannounced
+          in: query
+          type: boolean
+          description: Whether unannounced channels are included in the response or not. If set,
+        - name: include_auth_proof
+          in: query
+          type: boolean
+          description: If true, will include announcements' signatures into ChannelEdge.
+    - name: v1-graph-edge-chan_id
+      path: /v1/graph/edge/{chan_id}
+      operations:
+      - name: lightninggetchaninfo
+        method: GET
+        description: 'lncli: `getchaninfo`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: chan_id
+          in: path
+          type: string
+          description: The unique channel ID for the channel. The first 3 bytes are the block
+          required: true
+        - name: chan_point
+          in: query
+          type: string
+          description: The channel point of the channel in format funding_txid:output_index. If
+        - name: include_auth_proof
+          in: query
+          type: boolean
+          description: If true, will include announcements' signatures into ChannelEdge.
+    - name: v1-graph-info
+      path: /v1/graph/info
+      operations:
+      - name: lightninggetnetworkinfo
+        method: GET
+        description: 'lncli: `getnetworkinfo`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-graph-node-pub_key
+      path: /v1/graph/node/{pub_key}
+      operations:
+      - name: lightninggetnodeinfo
+        method: GET
+        description: 'lncli: `getnodeinfo`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pub_key
+          in: path
+          type: string
+          description: The 33-byte hex-encoded compressed public of the target node
+          required: true
+        - name: include_channels
+          in: query
+          type: boolean
+          description: If true, will include all known channels associated with the node.
+        - name: include_auth_proof
+          in: query
+          type: boolean
+          description: If true, will include announcements' signatures into ChannelEdge.
+    - name: v1-graph-nodemetrics
+      path: /v1/graph/nodemetrics
+      operations:
+      - name: lightninggetnodemetrics
+        method: GET
+        description: 'lncli: `getnodemetrics`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: types
+          in: query
+          type: array
+          description: The requested node metrics.
+    - name: v1-graph-routes-pub_key-amt
+      path: /v1/graph/routes/{pub_key}/{amt}
+      operations:
+      - name: lightningqueryroutes
+        method: GET
+        description: 'lncli: `queryroutes`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pub_key
+          in: path
+          type: string
+          description: The 33-byte hex-encoded public key for the payment destination
+          required: true
+        - name: amt
+          in: path
+          type: string
+          description: The amount to send expressed in satoshis.
+          required: true
+        - name: amt_msat
+          in: query
+          type: string
+          description: The amount to send expressed in millisatoshis.
+        - name: final_cltv_delta
+          in: query
+          type: integer
+          description: An optional CLTV delta from the current height that should be used for the
+        - name: fee_limit.fixed
+          in: query
+          type: string
+          description: The fee limit expressed as a fixed amount of satoshis.
+        - name: fee_limit.fixed_msat
+          in: query
+          type: string
+          description: The fee limit expressed as a fixed amount of millisatoshis.
+        - name: fee_limit.percent
+          in: query
+          type: string
+          description: The fee limit expressed as a percentage of the payment amount.
+        - name: ignored_nodes
+          in: query
+          type: array
+          description: A list of nodes to ignore during path finding. When using REST, these fields
+        - name: source_pub_key
+          in: query
+          type: string
+          description: The source node where the request route should originated from. If empty,
+        - name: use_mission_control
+          in: query
+          type: boolean
+          description: If set to true, edge probabilities from mission control will be used to get
+        - name: cltv_limit
+          in: query
+          type: integer
+          description: An optional maximum total time lock for the route. If the source is empty or
+        - name: dest_custom_records[string]
+          in: query
+          type: string
+          description: This is a request variable of the map type. The query format is "map_name[key]=value", e.g. If the
+            map name is Age, the key type is string, and the value type i
+        - name: outgoing_chan_id
+          in: query
+          type: string
+          description: Deprecated, use outgoing_chan_ids. The channel id of the channel that must
+        - name: last_hop_pubkey
+          in: query
+          type: string
+          description: The pubkey of the last hop of the route. If empty, any hop may be used.
+        - name: dest_features
+          in: query
+          type: array
+          description: Features assumed to be supported by the final node. All transitive feature
+        - name: time_pref
+          in: query
+          type: number
+          description: The time preference for this payment. Set to -1 to optimize for fees
+        - name: outgoing_chan_ids
+          in: query
+          type: array
+          description: The channel ids of the channels allowed for the first hop. If empty, any
+      - name: lightningqueryroutes2
+        method: POST
+        description: 'lncli: `queryroutes`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pub_key
+          in: path
+          type: string
+          description: The 33-byte hex-encoded public key for the payment destination
+          required: true
+        - name: amt
+          in: path
+          type: string
+          description: The amount to send expressed in satoshis.
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: true
+    - name: v1-graph-subscribe
+      path: /v1/graph/subscribe
+      operations:
+      - name: lightningsubscribechannelgraph
+        method: GET
+        description: SubscribeChannelGraph launches a streaming RPC that allows the caller to
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-htlc-resolution-chan_id-htlc_index
+      path: /v1/htlc-resolution/{chan_id}/{htlc_index}
+      operations:
+      - name: lightninglookuphtlcresolution
+        method: GET
+        description: LookupHtlcResolution retrieves a final htlc resolution from the database.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: chan_id
+          in: path
+          type: string
+          required: true
+        - name: htlc_index
+          in: path
+          type: string
+          required: true
+    - name: v1-invoice-r_hash_str
+      path: /v1/invoice/{r_hash_str}
+      operations:
+      - name: lightninglookupinvoice
+        method: GET
+        description: 'lncli: `lookupinvoice`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: r_hash_str
+          in: path
+          type: string
+          description: The hex-encoded payment hash of the invoice to be looked up. The passed
+          required: true
+        - name: r_hash
+          in: query
+          type: string
+          description: The payment hash of the invoice to be looked up. When using REST, this field
+    - name: v1-invoices
+      path: /v1/invoices
+      operations:
+      - name: lightninglistinvoices
+        method: GET
+        description: 'lncli: `listinvoices`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pending_only
+          in: query
+          type: boolean
+          description: If set, only invoices that are not settled and not canceled will be returned
+        - name: index_offset
+          in: query
+          type: string
+          description: The index of an invoice that will be used as either the start or end of a
+        - name: num_max_invoices
+          in: query
+          type: string
+          description: The max number of invoices to return in the response to this query.
+        - name: reversed
+          in: query
+          type: boolean
+          description: If set, the invoices returned will result from seeking backwards from the
+        - name: creation_date_start
+          in: query
+          type: string
+          description: If set, returns all invoices with a creation date greater than or equal
+        - name: creation_date_end
+          in: query
+          type: string
+          description: If set, returns all invoices with a creation date less than or equal to
+      - name: lightningdeletecanceledinvoice
+        method: DELETE
+        description: 'lncli: `deletecanceledinvoice`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: invoice_hash
+          in: query
+          type: string
+          description: Invoice payment hash to delete.
+      - name: lightningaddinvoice
+        method: POST
+        description: 'lncli: `addinvoice`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-invoices-subscribe
+      path: /v1/invoices/subscribe
+      operations:
+      - name: lightningsubscribeinvoices
+        method: GET
+        description: SubscribeInvoices returns a uni-directional stream (server -> client) for
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: add_index
+          in: query
+          type: string
+          description: If specified (non-zero), then we'll first start by sending out
+        - name: settle_index
+          in: query
+          type: string
+          description: If specified (non-zero), then we'll first start by sending out
+    - name: v1-macaroon
+      path: /v1/macaroon
+      operations:
+      - name: lightningbakemacaroon
+        method: POST
+        description: 'lncli: `bakemacaroon`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-macaroon-checkpermissions
+      path: /v1/macaroon/checkpermissions
+      operations:
+      - name: lightningcheckmacaroonpermissions
+        method: POST
+        description: CheckMacaroonPermissions checks whether the provided macaroon contains all
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-macaroon-ids
+      path: /v1/macaroon/ids
+      operations:
+      - name: lightninglistmacaroonids
+        method: GET
+        description: 'lncli: `listmacaroonids`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-macaroon-permissions
+      path: /v1/macaroon/permissions
+      operations:
+      - name: lightninglistpermissions
+        method: GET
+        description: 'lncli: `listpermissions`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-macaroon-root_key_id
+      path: /v1/macaroon/{root_key_id}
+      operations:
+      - name: lightningdeletemacaroonid
+        method: DELETE
+        description: 'lncli: `deletemacaroonid`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: root_key_id
+          in: path
+          type: string
+          description: The root key ID to be removed.
+          required: true
+    - name: v1-middleware
+      path: /v1/middleware
+      operations:
+      - name: lightningregisterrpcmiddleware
+        method: POST
+        description: RegisterRPCMiddleware adds a new gRPC middleware to the interceptor chain. A
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ref_msg_id
+          in: query
+          type: string
+          description: The request message ID this response refers to. Must always be set when
+        - name: register.middleware_name
+          in: query
+          type: string
+          description: The name of the middleware to register. The name should be as informative
+        - name: register.custom_macaroon_caveat_name
+          in: query
+          type: string
+          description: The name of the custom macaroon caveat that this middleware is responsible
+        - name: register.read_only_mode
+          in: query
+          type: boolean
+          description: Instead of defining a custom macaroon caveat name a middleware can register
+        - name: feedback.error
+          in: query
+          type: string
+          description: The error to return to the user. If this is non-empty, the incoming gRPC
+        - name: feedback.replace_response
+          in: query
+          type: boolean
+          description: A boolean indicating that the gRPC message should be replaced/overwritten.
+        - name: feedback.replacement_serialized
+          in: query
+          type: string
+          description: If the replace_response field is set to true, this field must contain the
+    - name: v1-newaddress
+      path: /v1/newaddress
+      operations:
+      - name: lightningnewaddress
+        method: GET
+        description: 'lncli: `newaddress`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: The type of address to generate.
+        - name: account
+          in: query
+          type: string
+          description: The name of the account to generate a new address for. If empty, the
+    - name: v1-onionmessage
+      path: /v1/onionmessage
+      operations:
+      - name: lightningsendonionmessage
+        method: POST
+        description: 'lncli: `sendonion`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-onionmessage-subscribe
+      path: /v1/onionmessage/subscribe
+      operations:
+      - name: lightningsubscribeonionmessages
+        method: GET
+        description: 'lncli: `subscribeonion`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-payment
+      path: /v1/payment
+      operations:
+      - name: lightningdeletepayment
+        method: DELETE
+        description: 'lncli: `deletepayments`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: payment_hash
+          in: query
+          type: string
+          description: Payment hash to delete.
+        - name: failed_htlcs_only
+          in: query
+          type: boolean
+          description: Only delete failed HTLCs from the payment, not the payment itself.
+    - name: v1-payments
+      path: /v1/payments
+      operations:
+      - name: lightninglistpayments
+        method: GET
+        description: 'lncli: `listpayments`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_incomplete
+          in: query
+          type: boolean
+          description: If true, then return payments that have not yet fully completed. This means
+        - name: index_offset
+          in: query
+          type: string
+          description: The index of a payment that will be used as either the start or end of a
+        - name: max_payments
+          in: query
+          type: string
+          description: The maximal number of payments returned in the response to this query.
+        - name: reversed
+          in: query
+          type: boolean
+          description: If set, the payments returned will result from seeking backwards from the
+        - name: count_total_payments
+          in: query
+          type: boolean
+          description: If set, all payments (complete and incomplete, independent of the
+        - name: creation_date_start
+          in: query
+          type: string
+          description: If set, returns all payments with a creation date greater than or equal
+        - name: creation_date_end
+          in: query
+          type: string
+          description: If set, returns all payments with a creation date less than or equal to
+        - name: omit_hops
+          in: query
+          type: boolean
+          description: If set, omit hop-level route data for HTLC attempts to reduce query
+      - name: lightningdeleteallpayments
+        method: DELETE
+        description: 'lncli: `deletepayments --all`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: failed_payments_only
+          in: query
+          type: boolean
+          description: Only delete failed payments.
+        - name: failed_htlcs_only
+          in: query
+          type: boolean
+          description: Only delete failed HTLCs from payments, not the payment itself.
+        - name: all_payments
+          in: query
+          type: boolean
+          description: 'Delete all payments. NOTE: Using this option requires careful'
+    - name: v1-payreq-pay_req
+      path: /v1/payreq/{pay_req}
+      operations:
+      - name: lightningdecodepayreq
+        method: GET
+        description: 'lncli: `decodepayreq`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pay_req
+          in: path
+          type: string
+          description: The payment request string to be decoded
+          required: true
+    - name: v1-peers
+      path: /v1/peers
+      operations:
+      - name: lightninglistpeers
+        method: GET
+        description: 'lncli: `listpeers`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: latest_error
+          in: query
+          type: boolean
+          description: If true, only the last error that our peer sent us will be returned with
+      - name: lightningconnectpeer
+        method: POST
+        description: 'lncli: `connect`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-peers-subscribe
+      path: /v1/peers/subscribe
+      operations:
+      - name: lightningsubscribepeerevents
+        method: GET
+        description: SubscribePeerEvents creates a uni-directional stream from the server to
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-peers-pub_key
+      path: /v1/peers/{pub_key}
+      operations:
+      - name: lightningdisconnectpeer
+        method: DELETE
+        description: 'lncli: `disconnect`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pub_key
+          in: path
+          type: string
+          description: The pubkey of the node to disconnect from
+          required: true
+    - name: v1-signmessage
+      path: /v1/signmessage
+      operations:
+      - name: lightningsignmessage
+        method: POST
+        description: 'lncli: `signmessage`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-stop
+      path: /v1/stop
+      operations:
+      - name: lightningstopdaemon
+        method: POST
+        description: 'lncli: `stop`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-switch
+      path: /v1/switch
+      operations:
+      - name: lightningforwardinghistory
+        method: POST
+        description: 'lncli: `fwdinghistory`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-transactions
+      path: /v1/transactions
+      operations:
+      - name: lightninggettransactions
+        method: GET
+        description: 'lncli: `listchaintxns`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_height
+          in: query
+          type: integer
+          description: The height from which to list transactions, inclusive. If this value is
+        - name: end_height
+          in: query
+          type: integer
+          description: The height until which to list transactions, inclusive. To include
+        - name: account
+          in: query
+          type: string
+          description: An optional filter to only include transactions relevant to an account.
+        - name: index_offset
+          in: query
+          type: integer
+          description: The index of a transaction that will be used in a query to determine which
+        - name: max_transactions
+          in: query
+          type: integer
+          description: The maximal number of transactions returned in the response to this query.
+      - name: lightningsendcoins
+        method: POST
+        description: 'lncli: `sendcoins`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-transactions-fee
+      path: /v1/transactions/fee
+      operations:
+      - name: lightningestimatefee
+        method: GET
+        description: 'lncli: `estimatefee`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: AddrToAmount[string]
+          in: query
+          type: string
+          description: This is a request variable of the map type. The query format is "map_name[key]=value", e.g. If the
+            map name is Age, the key type is string, and the value type i
+        - name: target_conf
+          in: query
+          type: integer
+          description: The target number of blocks that this transaction should be confirmed
+        - name: min_confs
+          in: query
+          type: integer
+          description: The minimum number of confirmations each one of your outputs used for
+        - name: spend_unconfirmed
+          in: query
+          type: boolean
+          description: Whether unconfirmed outputs should be used as inputs for the transaction.
+        - name: coin_selection_strategy
+          in: query
+          type: string
+          description: The strategy to use for selecting coins during fees estimation.
+    - name: v1-transactions-many
+      path: /v1/transactions/many
+      operations:
+      - name: lightningsendmany
+        method: POST
+        description: 'lncli: `sendmany`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+    - name: v1-transactions-subscribe
+      path: /v1/transactions/subscribe
+      operations:
+      - name: lightningsubscribetransactions
+        method: GET
+        description: SubscribeTransactions creates a uni-directional stream from the server to
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_height
+          in: query
+          type: integer
+          description: The height from which to list transactions, inclusive. If this value is
+        - name: end_height
+          in: query
+          type: integer
+          description: The height until which to list transactions, inclusive. To include
+        - name: account
+          in: query
+          type: string
+          description: An optional filter to only include transactions relevant to an account.
+        - name: index_offset
+          in: query
+          type: integer
+          description: The index of a transaction that will be used in a query to determine which
+        - name: max_transactions
+          in: query
+          type: integer
+          description: The maximal number of transactions returned in the response to this query.
+    - name: v1-utxos
+      path: /v1/utxos
+      operations:
+      - name: lightninglistunspent
+        method: GET
+        description: 'lncli: `listunspent`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: min_confs
+          in: query
+          type: integer
+          description: The minimum number of confirmations to be included.
+        - name: max_confs
+          in: query
+          type: integer
+          description: The maximum number of confirmations to be included.
+        - name: account
+          in: query
+          type: string
+          description: An optional filter to only include outputs belonging to an account.
+    - name: v1-verifymessage
+      path: /v1/verifymessage
+      operations:
+      - name: lightningverifymessage
+        method: POST
+        description: 'lncli: `verifymessage`'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: string
+          required: true
+  exposes:
+  - type: rest
+    namespace: lightning-labs-lightning-rest
+    port: 8080
+    description: REST adapter for Lightning Labs LND API — Lightning. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/aliases/list
+      name: v1-aliases-list
+      description: REST surface for v1-aliases-list.
+      operations:
+      - method: GET
+        name: lightninglistaliases
+        description: 'lncli: `listaliases`'
+        call: lightning-labs-lightning.lightninglistaliases
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/balance/blockchain
+      name: v1-balance-blockchain
+      description: REST surface for v1-balance-blockchain.
+      operations:
+      - method: GET
+        name: lightningwalletbalance
+        description: 'lncli: `walletbalance`'
+        call: lightning-labs-lightning.lightningwalletbalance
+        with:
+          account: rest.account
+          min_confs: rest.min_confs
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/balance/channels
+      name: v1-balance-channels
+      description: REST surface for v1-balance-channels.
+      operations:
+      - method: GET
+        name: lightningchannelbalance
+        description: 'lncli: `channelbalance`'
+        call: lightning-labs-lightning.lightningchannelbalance
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels
+      name: v1-channels
+      description: REST surface for v1-channels.
+      operations:
+      - method: GET
+        name: lightninglistchannels
+        description: 'lncli: `listchannels`'
+        call: lightning-labs-lightning.lightninglistchannels
+        with:
+          active_only: rest.active_only
+          inactive_only: rest.inactive_only
+          public_only: rest.public_only
+          private_only: rest.private_only
+          peer: rest.peer
+          peer_alias_lookup: rest.peer_alias_lookup
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: lightningopenchannelsync
+        description: OpenChannelSync is a synchronous version of the OpenChannel RPC call. This
+        call: lightning-labs-lightning.lightningopenchannelsync
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/abandon/{channel-point-funding-txid-str}/{channel-point-output-index}
+      name: v1-channels-abandon-channel-point-funding-txid-str-channel-point-output-index
+      description: REST surface for v1-channels-abandon-channel_point.funding_txid_str-channel_point.output_index.
+      operations:
+      - method: DELETE
+        name: lightningabandonchannel
+        description: 'lncli: `abandonchannel`'
+        call: lightning-labs-lightning.lightningabandonchannel
+        with:
+          channel_point.funding_txid_str: rest.channel_point.funding_txid_str
+          channel_point.output_index: rest.channel_point.output_index
+          channel_point.funding_txid_bytes: rest.channel_point.funding_txid_bytes
+          pending_funding_shim_only: rest.pending_funding_shim_only
+          i_know_what_i_am_doing: rest.i_know_what_i_am_doing
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/acceptor
+      name: v1-channels-acceptor
+      description: REST surface for v1-channels-acceptor.
+      operations:
+      - method: POST
+        name: lightningchannelacceptor
+        description: ChannelAcceptor dispatches a bi-directional streaming RPC in which
+        call: lightning-labs-lightning.lightningchannelacceptor
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/backup
+      name: v1-channels-backup
+      description: REST surface for v1-channels-backup.
+      operations:
+      - method: GET
+        name: lightningexportallchannelbackups
+        description: ExportAllChannelBackups returns static channel backups for all existing
+        call: lightning-labs-lightning.lightningexportallchannelbackups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/backup/restore
+      name: v1-channels-backup-restore
+      description: REST surface for v1-channels-backup-restore.
+      operations:
+      - method: POST
+        name: lightningrestorechannelbackups
+        description: 'lncli: `restorechanbackup`'
+        call: lightning-labs-lightning.lightningrestorechannelbackups
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/backup/subscribe
+      name: v1-channels-backup-subscribe
+      description: REST surface for v1-channels-backup-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribechannelbackups
+        description: SubscribeChannelBackups allows a client to sub-subscribe to the most up to
+        call: lightning-labs-lightning.lightningsubscribechannelbackups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/backup/verify
+      name: v1-channels-backup-verify
+      description: REST surface for v1-channels-backup-verify.
+      operations:
+      - method: POST
+        name: lightningverifychanbackup
+        description: 'lncli: `verifychanbackup`'
+        call: lightning-labs-lightning.lightningverifychanbackup
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/backup/{chan-point-funding-txid-str}/{chan-point-output-index}
+      name: v1-channels-backup-chan-point-funding-txid-str-chan-point-output-index
+      description: REST surface for v1-channels-backup-chan_point.funding_txid_str-chan_point.output_index.
+      operations:
+      - method: GET
+        name: lightningexportchannelbackup
+        description: 'lncli: `exportchanbackup`'
+        call: lightning-labs-lightning.lightningexportchannelbackup
+        with:
+          chan_point.funding_txid_str: rest.chan_point.funding_txid_str
+          chan_point.output_index: rest.chan_point.output_index
+          chan_point.funding_txid_bytes: rest.chan_point.funding_txid_bytes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/batch
+      name: v1-channels-batch
+      description: REST surface for v1-channels-batch.
+      operations:
+      - method: POST
+        name: lightningbatchopenchannel
+        description: 'lncli: `batchopenchannel`'
+        call: lightning-labs-lightning.lightningbatchopenchannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/closed
+      name: v1-channels-closed
+      description: REST surface for v1-channels-closed.
+      operations:
+      - method: GET
+        name: lightningclosedchannels
+        description: 'lncli: `closedchannels`'
+        call: lightning-labs-lightning.lightningclosedchannels
+        with:
+          cooperative: rest.cooperative
+          local_force: rest.local_force
+          remote_force: rest.remote_force
+          breach: rest.breach
+          funding_canceled: rest.funding_canceled
+          abandoned: rest.abandoned
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/pending
+      name: v1-channels-pending
+      description: REST surface for v1-channels-pending.
+      operations:
+      - method: GET
+        name: lightningpendingchannels
+        description: 'lncli: `pendingchannels`'
+        call: lightning-labs-lightning.lightningpendingchannels
+        with:
+          include_raw_tx: rest.include_raw_tx
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/stream
+      name: v1-channels-stream
+      description: REST surface for v1-channels-stream.
+      operations:
+      - method: POST
+        name: lightningopenchannel
+        description: 'lncli: `openchannel`'
+        call: lightning-labs-lightning.lightningopenchannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/subscribe
+      name: v1-channels-subscribe
+      description: REST surface for v1-channels-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribechannelevents
+        description: SubscribeChannelEvents creates a uni-directional stream from the server to
+        call: lightning-labs-lightning.lightningsubscribechannelevents
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/transaction-stream
+      name: v1-channels-transaction-stream
+      description: REST surface for v1-channels-transaction-stream.
+      operations:
+      - method: POST
+        name: lightningsendpayment
+        description: 'lncli: `sendpayment`'
+        call: lightning-labs-lightning.lightningsendpayment
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/transactions
+      name: v1-channels-transactions
+      description: REST surface for v1-channels-transactions.
+      operations:
+      - method: POST
+        name: lightningsendpaymentsync
+        description: Deprecated, use routerrpc.SendPaymentV2. SendPaymentSync is the synchronous
+        call: lightning-labs-lightning.lightningsendpaymentsync
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/transactions/route
+      name: v1-channels-transactions-route
+      description: REST surface for v1-channels-transactions-route.
+      operations:
+      - method: POST
+        name: lightningsendtoroutesync
+        description: Deprecated, use routerrpc.SendToRouteV2. SendToRouteSync is a synchronous
+        call: lightning-labs-lightning.lightningsendtoroutesync
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/channels/{channel-point-funding-txid-str}/{channel-point-output-index}
+      name: v1-channels-channel-point-funding-txid-str-channel-point-output-index
+      description: REST surface for v1-channels-channel_point.funding_txid_str-channel_point.output_index.
+      operations:
+      - method: DELETE
+        name: lightningclosechannel
+        description: 'lncli: `closechannel`'
+        call: lightning-labs-lightning.lightningclosechannel
+        with:
+          channel_point.funding_txid_str: rest.channel_point.funding_txid_str
+          channel_point.output_index: rest.channel_point.output_index
+          channel_point.funding_txid_bytes: rest.channel_point.funding_txid_bytes
+          force: rest.force
+          target_conf: rest.target_conf
+          sat_per_byte: rest.sat_per_byte
+          delivery_address: rest.delivery_address
+          sat_per_vbyte: rest.sat_per_vbyte
+          max_fee_per_vbyte: rest.max_fee_per_vbyte
+          no_wait: rest.no_wait
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/chanpolicy
+      name: v1-chanpolicy
+      description: REST surface for v1-chanpolicy.
+      operations:
+      - method: POST
+        name: lightningupdatechannelpolicy
+        description: 'lncli: `updatechanpolicy`'
+        call: lightning-labs-lightning.lightningupdatechannelpolicy
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/custommessage
+      name: v1-custommessage
+      description: REST surface for v1-custommessage.
+      operations:
+      - method: POST
+        name: lightningsendcustommessage
+        description: 'lncli: `sendcustom`'
+        call: lightning-labs-lightning.lightningsendcustommessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/custommessage/subscribe
+      name: v1-custommessage-subscribe
+      description: REST surface for v1-custommessage-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribecustommessages
+        description: 'lncli: `subscribecustom`'
+        call: lightning-labs-lightning.lightningsubscribecustommessages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/debuglevel
+      name: v1-debuglevel
+      description: REST surface for v1-debuglevel.
+      operations:
+      - method: POST
+        name: lightningdebuglevel
+        description: 'lncli: `debuglevel`'
+        call: lightning-labs-lightning.lightningdebuglevel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/fees
+      name: v1-fees
+      description: REST surface for v1-fees.
+      operations:
+      - method: GET
+        name: lightningfeereport
+        description: 'lncli: `feereport`'
+        call: lightning-labs-lightning.lightningfeereport
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/funding/step
+      name: v1-funding-step
+      description: REST surface for v1-funding-step.
+      operations:
+      - method: POST
+        name: lightningfundingstatestep
+        description: FundingStateStep is an advanced funding related call that allows the caller
+        call: lightning-labs-lightning.lightningfundingstatestep
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/getdebuginfo
+      name: v1-getdebuginfo
+      description: REST surface for v1-getdebuginfo.
+      operations:
+      - method: GET
+        name: lightninggetdebuginfo
+        description: 'lncli: ''getdebuginfo'''
+        call: lightning-labs-lightning.lightninggetdebuginfo
+        with:
+          include_log: rest.include_log
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/getinfo
+      name: v1-getinfo
+      description: REST surface for v1-getinfo.
+      operations:
+      - method: GET
+        name: lightninggetinfo
+        description: 'lncli: `getinfo`'
+        call: lightning-labs-lightning.lightninggetinfo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/getrecoveryinfo
+      name: v1-getrecoveryinfo
+      description: REST surface for v1-getrecoveryinfo.
+      operations:
+      - method: GET
+        name: lightninggetrecoveryinfo
+        description: '* lncli: `getrecoveryinfo`'
+        call: lightning-labs-lightning.lightninggetrecoveryinfo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph
+      name: v1-graph
+      description: REST surface for v1-graph.
+      operations:
+      - method: GET
+        name: lightningdescribegraph
+        description: 'lncli: `describegraph`'
+        call: lightning-labs-lightning.lightningdescribegraph
+        with:
+          include_unannounced: rest.include_unannounced
+          include_auth_proof: rest.include_auth_proof
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/edge/{chan-id}
+      name: v1-graph-edge-chan-id
+      description: REST surface for v1-graph-edge-chan_id.
+      operations:
+      - method: GET
+        name: lightninggetchaninfo
+        description: 'lncli: `getchaninfo`'
+        call: lightning-labs-lightning.lightninggetchaninfo
+        with:
+          chan_id: rest.chan_id
+          chan_point: rest.chan_point
+          include_auth_proof: rest.include_auth_proof
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/info
+      name: v1-graph-info
+      description: REST surface for v1-graph-info.
+      operations:
+      - method: GET
+        name: lightninggetnetworkinfo
+        description: 'lncli: `getnetworkinfo`'
+        call: lightning-labs-lightning.lightninggetnetworkinfo
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/node/{pub-key}
+      name: v1-graph-node-pub-key
+      description: REST surface for v1-graph-node-pub_key.
+      operations:
+      - method: GET
+        name: lightninggetnodeinfo
+        description: 'lncli: `getnodeinfo`'
+        call: lightning-labs-lightning.lightninggetnodeinfo
+        with:
+          pub_key: rest.pub_key
+          include_channels: rest.include_channels
+          include_auth_proof: rest.include_auth_proof
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/nodemetrics
+      name: v1-graph-nodemetrics
+      description: REST surface for v1-graph-nodemetrics.
+      operations:
+      - method: GET
+        name: lightninggetnodemetrics
+        description: 'lncli: `getnodemetrics`'
+        call: lightning-labs-lightning.lightninggetnodemetrics
+        with:
+          types: rest.types
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/routes/{pub-key}/{amt}
+      name: v1-graph-routes-pub-key-amt
+      description: REST surface for v1-graph-routes-pub_key-amt.
+      operations:
+      - method: GET
+        name: lightningqueryroutes
+        description: 'lncli: `queryroutes`'
+        call: lightning-labs-lightning.lightningqueryroutes
+        with:
+          pub_key: rest.pub_key
+          amt: rest.amt
+          amt_msat: rest.amt_msat
+          final_cltv_delta: rest.final_cltv_delta
+          fee_limit.fixed: rest.fee_limit.fixed
+          fee_limit.fixed_msat: rest.fee_limit.fixed_msat
+          fee_limit.percent: rest.fee_limit.percent
+          ignored_nodes: rest.ignored_nodes
+          source_pub_key: rest.source_pub_key
+          use_mission_control: rest.use_mission_control
+          cltv_limit: rest.cltv_limit
+          dest_custom_records[string]: rest.dest_custom_records[string]
+          outgoing_chan_id: rest.outgoing_chan_id
+          last_hop_pubkey: rest.last_hop_pubkey
+          dest_features: rest.dest_features
+          time_pref: rest.time_pref
+          outgoing_chan_ids: rest.outgoing_chan_ids
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: lightningqueryroutes2
+        description: 'lncli: `queryroutes`'
+        call: lightning-labs-lightning.lightningqueryroutes2
+        with:
+          pub_key: rest.pub_key
+          amt: rest.amt
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/graph/subscribe
+      name: v1-graph-subscribe
+      description: REST surface for v1-graph-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribechannelgraph
+        description: SubscribeChannelGraph launches a streaming RPC that allows the caller to
+        call: lightning-labs-lightning.lightningsubscribechannelgraph
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/htlc-resolution/{chan-id}/{htlc-index}
+      name: v1-htlc-resolution-chan-id-htlc-index
+      description: REST surface for v1-htlc-resolution-chan_id-htlc_index.
+      operations:
+      - method: GET
+        name: lightninglookuphtlcresolution
+        description: LookupHtlcResolution retrieves a final htlc resolution from the database.
+        call: lightning-labs-lightning.lightninglookuphtlcresolution
+        with:
+          chan_id: rest.chan_id
+          htlc_index: rest.htlc_index
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/invoice/{r-hash-str}
+      name: v1-invoice-r-hash-str
+      description: REST surface for v1-invoice-r_hash_str.
+      operations:
+      - method: GET
+        name: lightninglookupinvoice
+        description: 'lncli: `lookupinvoice`'
+        call: lightning-labs-lightning.lightninglookupinvoice
+        with:
+          r_hash_str: rest.r_hash_str
+          r_hash: rest.r_hash
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/invoices
+      name: v1-invoices
+      description: REST surface for v1-invoices.
+      operations:
+      - method: GET
+        name: lightninglistinvoices
+        description: 'lncli: `listinvoices`'
+        call: lightning-labs-lightning.lightninglistinvoices
+        with:
+          pending_only: rest.pending_only
+          index_offset: rest.index_offset
+          num_max_invoices: rest.num_max_invoices
+          reversed: rest.reversed
+          creation_date_start: rest.creation_date_start
+          creation_date_end: rest.creation_date_end
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: lightningdeletecanceledinvoice
+        description: 'lncli: `deletecanceledinvoice`'
+        call: lightning-labs-lightning.lightningdeletecanceledinvoice
+        with:
+          invoice_hash: rest.invoice_hash
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: lightningaddinvoice
+        description: 'lncli: `addinvoice`'
+        call: lightning-labs-lightning.lightningaddinvoice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/invoices/subscribe
+      name: v1-invoices-subscribe
+      description: REST surface for v1-invoices-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribeinvoices
+        description: SubscribeInvoices returns a uni-directional stream (server -> client) for
+        call: lightning-labs-lightning.lightningsubscribeinvoices
+        with:
+          add_index: rest.add_index
+          settle_index: rest.settle_index
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/macaroon
+      name: v1-macaroon
+      description: REST surface for v1-macaroon.
+      operations:
+      - method: POST
+        name: lightningbakemacaroon
+        description: 'lncli: `bakemacaroon`'
+        call: lightning-labs-lightning.lightningbakemacaroon
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/macaroon/checkpermissions
+      name: v1-macaroon-checkpermissions
+      description: REST surface for v1-macaroon-checkpermissions.
+      operations:
+      - method: POST
+        name: lightningcheckmacaroonpermissions
+        description: CheckMacaroonPermissions checks whether the provided macaroon contains all
+        call: lightning-labs-lightning.lightningcheckmacaroonpermissions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/macaroon/ids
+      name: v1-macaroon-ids
+      description: REST surface for v1-macaroon-ids.
+      operations:
+      - method: GET
+        name: lightninglistmacaroonids
+        description: 'lncli: `listmacaroonids`'
+        call: lightning-labs-lightning.lightninglistmacaroonids
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/macaroon/permissions
+      name: v1-macaroon-permissions
+      description: REST surface for v1-macaroon-permissions.
+      operations:
+      - method: GET
+        name: lightninglistpermissions
+        description: 'lncli: `listpermissions`'
+        call: lightning-labs-lightning.lightninglistpermissions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/macaroon/{root-key-id}
+      name: v1-macaroon-root-key-id
+      description: REST surface for v1-macaroon-root_key_id.
+      operations:
+      - method: DELETE
+        name: lightningdeletemacaroonid
+        description: 'lncli: `deletemacaroonid`'
+        call: lightning-labs-lightning.lightningdeletemacaroonid
+        with:
+          root_key_id: rest.root_key_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/middleware
+      name: v1-middleware
+      description: REST surface for v1-middleware.
+      operations:
+      - method: POST
+        name: lightningregisterrpcmiddleware
+        description: RegisterRPCMiddleware adds a new gRPC middleware to the interceptor chain. A
+        call: lightning-labs-lightning.lightningregisterrpcmiddleware
+        with:
+          ref_msg_id: rest.ref_msg_id
+          register.middleware_name: rest.register.middleware_name
+          register.custom_macaroon_caveat_name: rest.register.custom_macaroon_caveat_name
+          register.read_only_mode: rest.register.read_only_mode
+          feedback.error: rest.feedback.error
+          feedback.replace_response: rest.feedback.replace_response
+          feedback.replacement_serialized: rest.feedback.replacement_serialized
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/newaddress
+      name: v1-newaddress
+      description: REST surface for v1-newaddress.
+      operations:
+      - method: GET
+        name: lightningnewaddress
+        description: 'lncli: `newaddress`'
+        call: lightning-labs-lightning.lightningnewaddress
+        with:
+          type: rest.type
+          account: rest.account
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/onionmessage
+      name: v1-onionmessage
+      description: REST surface for v1-onionmessage.
+      operations:
+      - method: POST
+        name: lightningsendonionmessage
+        description: 'lncli: `sendonion`'
+        call: lightning-labs-lightning.lightningsendonionmessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/onionmessage/subscribe
+      name: v1-onionmessage-subscribe
+      description: REST surface for v1-onionmessage-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribeonionmessages
+        description: 'lncli: `subscribeonion`'
+        call: lightning-labs-lightning.lightningsubscribeonionmessages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/payment
+      name: v1-payment
+      description: REST surface for v1-payment.
+      operations:
+      - method: DELETE
+        name: lightningdeletepayment
+        description: 'lncli: `deletepayments`'
+        call: lightning-labs-lightning.lightningdeletepayment
+        with:
+          payment_hash: rest.payment_hash
+          failed_htlcs_only: rest.failed_htlcs_only
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/payments
+      name: v1-payments
+      description: REST surface for v1-payments.
+      operations:
+      - method: GET
+        name: lightninglistpayments
+        description: 'lncli: `listpayments`'
+        call: lightning-labs-lightning.lightninglistpayments
+        with:
+          include_incomplete: rest.include_incomplete
+          index_offset: rest.index_offset
+          max_payments: rest.max_payments
+          reversed: rest.reversed
+          count_total_payments: rest.count_total_payments
+          creation_date_start: rest.creation_date_start
+          creation_date_end: rest.creation_date_end
+          omit_hops: rest.omit_hops
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: lightningdeleteallpayments
+        description: 'lncli: `deletepayments --all`'
+        call: lightning-labs-lightning.lightningdeleteallpayments
+        with:
+          failed_payments_only: rest.failed_payments_only
+          failed_htlcs_only: rest.failed_htlcs_only
+          all_payments: rest.all_payments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/payreq/{pay-req}
+      name: v1-payreq-pay-req
+      description: REST surface for v1-payreq-pay_req.
+      operations:
+      - method: GET
+        name: lightningdecodepayreq
+        description: 'lncli: `decodepayreq`'
+        call: lightning-labs-lightning.lightningdecodepayreq
+        with:
+          pay_req: rest.pay_req
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/peers
+      name: v1-peers
+      description: REST surface for v1-peers.
+      operations:
+      - method: GET
+        name: lightninglistpeers
+        description: 'lncli: `listpeers`'
+        call: lightning-labs-lightning.lightninglistpeers
+        with:
+          latest_error: rest.latest_error
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: lightningconnectpeer
+        description: 'lncli: `connect`'
+        call: lightning-labs-lightning.lightningconnectpeer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/peers/subscribe
+      name: v1-peers-subscribe
+      description: REST surface for v1-peers-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribepeerevents
+        description: SubscribePeerEvents creates a uni-directional stream from the server to
+        call: lightning-labs-lightning.lightningsubscribepeerevents
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/peers/{pub-key}
+      name: v1-peers-pub-key
+      description: REST surface for v1-peers-pub_key.
+      operations:
+      - method: DELETE
+        name: lightningdisconnectpeer
+        description: 'lncli: `disconnect`'
+        call: lightning-labs-lightning.lightningdisconnectpeer
+        with:
+          pub_key: rest.pub_key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/signmessage
+      name: v1-signmessage
+      description: REST surface for v1-signmessage.
+      operations:
+      - method: POST
+        name: lightningsignmessage
+        description: 'lncli: `signmessage`'
+        call: lightning-labs-lightning.lightningsignmessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/stop
+      name: v1-stop
+      description: REST surface for v1-stop.
+      operations:
+      - method: POST
+        name: lightningstopdaemon
+        description: 'lncli: `stop`'
+        call: lightning-labs-lightning.lightningstopdaemon
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/switch
+      name: v1-switch
+      description: REST surface for v1-switch.
+      operations:
+      - method: POST
+        name: lightningforwardinghistory
+        description: 'lncli: `fwdinghistory`'
+        call: lightning-labs-lightning.lightningforwardinghistory
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/transactions
+      name: v1-transactions
+      description: REST surface for v1-transactions.
+      operations:
+      - method: GET
+        name: lightninggettransactions
+        description: 'lncli: `listchaintxns`'
+        call: lightning-labs-lightning.lightninggettransactions
+        with:
+          start_height: rest.start_height
+          end_height: rest.end_height
+          account: rest.account
+          index_offset: rest.index_offset
+          max_transactions: rest.max_transactions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: lightningsendcoins
+        description: 'lncli: `sendcoins`'
+        call: lightning-labs-lightning.lightningsendcoins
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/transactions/fee
+      name: v1-transactions-fee
+      description: REST surface for v1-transactions-fee.
+      operations:
+      - method: GET
+        name: lightningestimatefee
+        description: 'lncli: `estimatefee`'
+        call: lightning-labs-lightning.lightningestimatefee
+        with:
+          AddrToAmount[string]: rest.AddrToAmount[string]
+          target_conf: rest.target_conf
+          min_confs: rest.min_confs
+          spend_unconfirmed: rest.spend_unconfirmed
+          coin_selection_strategy: rest.coin_selection_strategy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/transactions/many
+      name: v1-transactions-many
+      description: REST surface for v1-transactions-many.
+      operations:
+      - method: POST
+        name: lightningsendmany
+        description: 'lncli: `sendmany`'
+        call: lightning-labs-lightning.lightningsendmany
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/transactions/subscribe
+      name: v1-transactions-subscribe
+      description: REST surface for v1-transactions-subscribe.
+      operations:
+      - method: GET
+        name: lightningsubscribetransactions
+        description: SubscribeTransactions creates a uni-directional stream from the server to
+        call: lightning-labs-lightning.lightningsubscribetransactions
+        with:
+          start_height: rest.start_height
+          end_height: rest.end_height
+          account: rest.account
+          index_offset: rest.index_offset
+          max_transactions: rest.max_transactions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/utxos
+      name: v1-utxos
+      description: REST surface for v1-utxos.
+      operations:
+      - method: GET
+        name: lightninglistunspent
+        description: 'lncli: `listunspent`'
+        call: lightning-labs-lightning.lightninglistunspent
+        with:
+          min_confs: rest.min_confs
+          max_confs: rest.max_confs
+          account: rest.account
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/verifymessage
+      name: v1-verifymessage
+      description: REST surface for v1-verifymessage.
+      operations:
+      - method: POST
+        name: lightningverifymessage
+        description: 'lncli: `verifymessage`'
+        call: lightning-labs-lightning.lightningverifymessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: lightning-labs-lightning-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lightning Labs LND API — Lightning. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: lncli-listaliases
+      description: 'lncli: `listaliases`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistaliases
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-walletbalance
+      description: 'lncli: `walletbalance`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningwalletbalance
+      with:
+        account: tools.account
+        min_confs: tools.min_confs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-channelbalance
+      description: 'lncli: `channelbalance`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningchannelbalance
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listchannels
+      description: 'lncli: `listchannels`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistchannels
+      with:
+        active_only: tools.active_only
+        inactive_only: tools.inactive_only
+        public_only: tools.public_only
+        private_only: tools.private_only
+        peer: tools.peer
+        peer_alias_lookup: tools.peer_alias_lookup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: openchannelsync-is-synchronous-version-openchannel
+      description: OpenChannelSync is a synchronous version of the OpenChannel RPC call. This
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningopenchannelsync
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-abandonchannel
+      description: 'lncli: `abandonchannel`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningabandonchannel
+      with:
+        channel_point.funding_txid_str: tools.channel_point.funding_txid_str
+        channel_point.output_index: tools.channel_point.output_index
+        channel_point.funding_txid_bytes: tools.channel_point.funding_txid_bytes
+        pending_funding_shim_only: tools.pending_funding_shim_only
+        i_know_what_i_am_doing: tools.i_know_what_i_am_doing
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: channelacceptor-dispatches-bi-directional-streaming
+      description: ChannelAcceptor dispatches a bi-directional streaming RPC in which
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningchannelacceptor
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: exportallchannelbackups-returns-static-channel-backups
+      description: ExportAllChannelBackups returns static channel backups for all existing
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningexportallchannelbackups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-restorechanbackup
+      description: 'lncli: `restorechanbackup`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningrestorechannelbackups
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribechannelbackups-allows-client-sub-subscribe
+      description: SubscribeChannelBackups allows a client to sub-subscribe to the most up to
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribechannelbackups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-verifychanbackup
+      description: 'lncli: `verifychanbackup`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningverifychanbackup
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-exportchanbackup
+      description: 'lncli: `exportchanbackup`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningexportchannelbackup
+      with:
+        chan_point.funding_txid_str: tools.chan_point.funding_txid_str
+        chan_point.output_index: tools.chan_point.output_index
+        chan_point.funding_txid_bytes: tools.chan_point.funding_txid_bytes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-batchopenchannel
+      description: 'lncli: `batchopenchannel`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningbatchopenchannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-closedchannels
+      description: 'lncli: `closedchannels`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningclosedchannels
+      with:
+        cooperative: tools.cooperative
+        local_force: tools.local_force
+        remote_force: tools.remote_force
+        breach: tools.breach
+        funding_canceled: tools.funding_canceled
+        abandoned: tools.abandoned
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-pendingchannels
+      description: 'lncli: `pendingchannels`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningpendingchannels
+      with:
+        include_raw_tx: tools.include_raw_tx
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-openchannel
+      description: 'lncli: `openchannel`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningopenchannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribechannelevents-creates-uni-directional-stream
+      description: SubscribeChannelEvents creates a uni-directional stream from the server to
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribechannelevents
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-sendpayment
+      description: 'lncli: `sendpayment`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendpayment
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deprecated-use-routerrpc-sendpaymentv2-sendpaymentsync-is
+      description: Deprecated, use routerrpc.SendPaymentV2. SendPaymentSync is the synchronous
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendpaymentsync
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deprecated-use-routerrpc-sendtoroutev2-sendtoroutesync-is
+      description: Deprecated, use routerrpc.SendToRouteV2. SendToRouteSync is a synchronous
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendtoroutesync
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-closechannel
+      description: 'lncli: `closechannel`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningclosechannel
+      with:
+        channel_point.funding_txid_str: tools.channel_point.funding_txid_str
+        channel_point.output_index: tools.channel_point.output_index
+        channel_point.funding_txid_bytes: tools.channel_point.funding_txid_bytes
+        force: tools.force
+        target_conf: tools.target_conf
+        sat_per_byte: tools.sat_per_byte
+        delivery_address: tools.delivery_address
+        sat_per_vbyte: tools.sat_per_vbyte
+        max_fee_per_vbyte: tools.max_fee_per_vbyte
+        no_wait: tools.no_wait
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-updatechanpolicy
+      description: 'lncli: `updatechanpolicy`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningupdatechannelpolicy
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-sendcustom
+      description: 'lncli: `sendcustom`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendcustommessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-subscribecustom
+      description: 'lncli: `subscribecustom`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribecustommessages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-debuglevel
+      description: 'lncli: `debuglevel`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningdebuglevel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-feereport
+      description: 'lncli: `feereport`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningfeereport
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fundingstatestep-is-advanced-funding-related
+      description: FundingStateStep is an advanced funding related call that allows the caller
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningfundingstatestep
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getdebuginfo
+      description: 'lncli: ''getdebuginfo'''
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetdebuginfo
+      with:
+        include_log: tools.include_log
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getinfo
+      description: 'lncli: `getinfo`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetinfo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getrecoveryinfo
+      description: '* lncli: `getrecoveryinfo`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetrecoveryinfo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-describegraph
+      description: 'lncli: `describegraph`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningdescribegraph
+      with:
+        include_unannounced: tools.include_unannounced
+        include_auth_proof: tools.include_auth_proof
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getchaninfo
+      description: 'lncli: `getchaninfo`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetchaninfo
+      with:
+        chan_id: tools.chan_id
+        chan_point: tools.chan_point
+        include_auth_proof: tools.include_auth_proof
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getnetworkinfo
+      description: 'lncli: `getnetworkinfo`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetnetworkinfo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getnodeinfo
+      description: 'lncli: `getnodeinfo`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetnodeinfo
+      with:
+        pub_key: tools.pub_key
+        include_channels: tools.include_channels
+        include_auth_proof: tools.include_auth_proof
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-getnodemetrics
+      description: 'lncli: `getnodemetrics`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggetnodemetrics
+      with:
+        types: tools.types
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-queryroutes
+      description: 'lncli: `queryroutes`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningqueryroutes
+      with:
+        pub_key: tools.pub_key
+        amt: tools.amt
+        amt_msat: tools.amt_msat
+        final_cltv_delta: tools.final_cltv_delta
+        fee_limit.fixed: tools.fee_limit.fixed
+        fee_limit.fixed_msat: tools.fee_limit.fixed_msat
+        fee_limit.percent: tools.fee_limit.percent
+        ignored_nodes: tools.ignored_nodes
+        source_pub_key: tools.source_pub_key
+        use_mission_control: tools.use_mission_control
+        cltv_limit: tools.cltv_limit
+        dest_custom_records[string]: tools.dest_custom_records[string]
+        outgoing_chan_id: tools.outgoing_chan_id
+        last_hop_pubkey: tools.last_hop_pubkey
+        dest_features: tools.dest_features
+        time_pref: tools.time_pref
+        outgoing_chan_ids: tools.outgoing_chan_ids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-queryroutes-2
+      description: 'lncli: `queryroutes`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningqueryroutes2
+      with:
+        pub_key: tools.pub_key
+        amt: tools.amt
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribechannelgraph-launches-streaming-rpc-that
+      description: SubscribeChannelGraph launches a streaming RPC that allows the caller to
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribechannelgraph
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lookuphtlcresolution-retrieves-final-htlc-resolution
+      description: LookupHtlcResolution retrieves a final htlc resolution from the database.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglookuphtlcresolution
+      with:
+        chan_id: tools.chan_id
+        htlc_index: tools.htlc_index
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-lookupinvoice
+      description: 'lncli: `lookupinvoice`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglookupinvoice
+      with:
+        r_hash_str: tools.r_hash_str
+        r_hash: tools.r_hash
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listinvoices
+      description: 'lncli: `listinvoices`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistinvoices
+      with:
+        pending_only: tools.pending_only
+        index_offset: tools.index_offset
+        num_max_invoices: tools.num_max_invoices
+        reversed: tools.reversed
+        creation_date_start: tools.creation_date_start
+        creation_date_end: tools.creation_date_end
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-deletecanceledinvoice
+      description: 'lncli: `deletecanceledinvoice`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningdeletecanceledinvoice
+      with:
+        invoice_hash: tools.invoice_hash
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-addinvoice
+      description: 'lncli: `addinvoice`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningaddinvoice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribeinvoices-returns-uni-directional-stream
+      description: SubscribeInvoices returns a uni-directional stream (server -> client) for
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribeinvoices
+      with:
+        add_index: tools.add_index
+        settle_index: tools.settle_index
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-bakemacaroon
+      description: 'lncli: `bakemacaroon`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningbakemacaroon
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: checkmacaroonpermissions-checks-whether-provided-macaroon
+      description: CheckMacaroonPermissions checks whether the provided macaroon contains all
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningcheckmacaroonpermissions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listmacaroonids
+      description: 'lncli: `listmacaroonids`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistmacaroonids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listpermissions
+      description: 'lncli: `listpermissions`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistpermissions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-deletemacaroonid
+      description: 'lncli: `deletemacaroonid`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningdeletemacaroonid
+      with:
+        root_key_id: tools.root_key_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: registerrpcmiddleware-adds-new-grpc-middleware
+      description: RegisterRPCMiddleware adds a new gRPC middleware to the interceptor chain. A
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningregisterrpcmiddleware
+      with:
+        ref_msg_id: tools.ref_msg_id
+        register.middleware_name: tools.register.middleware_name
+        register.custom_macaroon_caveat_name: tools.register.custom_macaroon_caveat_name
+        register.read_only_mode: tools.register.read_only_mode
+        feedback.error: tools.feedback.error
+        feedback.replace_response: tools.feedback.replace_response
+        feedback.replacement_serialized: tools.feedback.replacement_serialized
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-newaddress
+      description: 'lncli: `newaddress`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningnewaddress
+      with:
+        type: tools.type
+        account: tools.account
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-sendonion
+      description: 'lncli: `sendonion`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendonionmessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-subscribeonion
+      description: 'lncli: `subscribeonion`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribeonionmessages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-deletepayments
+      description: 'lncli: `deletepayments`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningdeletepayment
+      with:
+        payment_hash: tools.payment_hash
+        failed_htlcs_only: tools.failed_htlcs_only
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listpayments
+      description: 'lncli: `listpayments`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistpayments
+      with:
+        include_incomplete: tools.include_incomplete
+        index_offset: tools.index_offset
+        max_payments: tools.max_payments
+        reversed: tools.reversed
+        count_total_payments: tools.count_total_payments
+        creation_date_start: tools.creation_date_start
+        creation_date_end: tools.creation_date_end
+        omit_hops: tools.omit_hops
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-deletepayments-all
+      description: 'lncli: `deletepayments --all`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningdeleteallpayments
+      with:
+        failed_payments_only: tools.failed_payments_only
+        failed_htlcs_only: tools.failed_htlcs_only
+        all_payments: tools.all_payments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-decodepayreq
+      description: 'lncli: `decodepayreq`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningdecodepayreq
+      with:
+        pay_req: tools.pay_req
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listpeers
+      description: 'lncli: `listpeers`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistpeers
+      with:
+        latest_error: tools.latest_error
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-connect
+      description: 'lncli: `connect`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningconnectpeer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribepeerevents-creates-uni-directional-stream
+      description: SubscribePeerEvents creates a uni-directional stream from the server to
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribepeerevents
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-disconnect
+      description: 'lncli: `disconnect`'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: lightning-labs-lightning.lightningdisconnectpeer
+      with:
+        pub_key: tools.pub_key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-signmessage
+      description: 'lncli: `signmessage`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsignmessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-stop
+      description: 'lncli: `stop`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningstopdaemon
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-fwdinghistory
+      description: 'lncli: `fwdinghistory`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningforwardinghistory
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listchaintxns
+      description: 'lncli: `listchaintxns`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninggettransactions
+      with:
+        start_height: tools.start_height
+        end_height: tools.end_height
+        account: tools.account
+        index_offset: tools.index_offset
+        max_transactions: tools.max_transactions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-sendcoins
+      description: 'lncli: `sendcoins`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendcoins
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-estimatefee
+      description: 'lncli: `estimatefee`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningestimatefee
+      with:
+        AddrToAmount[string]: tools.AddrToAmount[string]
+        target_conf: tools.target_conf
+        min_confs: tools.min_confs
+        spend_unconfirmed: tools.spend_unconfirmed
+        coin_selection_strategy: tools.coin_selection_strategy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-sendmany
+      description: 'lncli: `sendmany`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningsendmany
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: subscribetransactions-creates-uni-directional-stream
+      description: SubscribeTransactions creates a uni-directional stream from the server to
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightningsubscribetransactions
+      with:
+        start_height: tools.start_height
+        end_height: tools.end_height
+        account: tools.account
+        index_offset: tools.index_offset
+        max_transactions: tools.max_transactions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-listunspent
+      description: 'lncli: `listunspent`'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lightning-labs-lightning.lightninglistunspent
+      with:
+        min_confs: tools.min_confs
+        max_confs: tools.max_confs
+        account: tools.account
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lncli-verifymessage
+      description: 'lncli: `verifymessage`'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: lightning-labs-lightning.lightningverifymessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
