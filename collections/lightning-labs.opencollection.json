@@ -1,0 +1,1564 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightning Labs LND API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lightning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "lncli: `listaliases`\nListAliases returns the set of all aliases that have ever existed with\ntheir confirmed SCID (if it exists) and/or the base SCID (in the case of\nzero conf).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/aliases/list"
+          },
+          "docs": "lncli: `listaliases`\nListAliases returns the set of all aliases that have ever existed with\ntheir confirmed SCID (if it exists) and/or the base SCID (in the case of\nzero conf)."
+        },
+        {
+          "info": {
+            "name": "lncli: `walletbalance`\nWalletBalance returns total unspent outputs(confirmed and unconfirmed), all\nconfirmed unspent outputs and all unconfirmed unspent outputs under control\nof the wallet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/balance/blockchain",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "The wallet account the balance is shown for.\nIf this is not specified, the balance of the \"default\" account is shown."
+              },
+              {
+                "name": "min_confs",
+                "value": "",
+                "type": "query",
+                "description": "The minimum number of confirmations each one of your outputs used for the\nfunding transaction must satisfy. If this is not specified, the default\nvalue of 1 is used."
+              }
+            ]
+          },
+          "docs": "lncli: `walletbalance`\nWalletBalance returns total unspent outputs(confirmed and unconfirmed), all\nconfirmed unspent outputs and all unconfirmed unspent outputs under control\nof the wallet."
+        },
+        {
+          "info": {
+            "name": "lncli: `channelbalance`\nChannelBalance returns a report on the total funds across all open channels,\ncategorized in local/remote, pending local/remote and unsettled local/remote\nbalances.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/balance/channels"
+          },
+          "docs": "lncli: `channelbalance`\nChannelBalance returns a report on the total funds across all open channels,\ncategorized in local/remote, pending local/remote and unsettled local/remote\nbalances."
+        },
+        {
+          "info": {
+            "name": "lncli: `listchannels`\nListChannels returns a description of all the open channels that this node\nis a participant in.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels",
+            "params": [
+              {
+                "name": "active_only",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "inactive_only",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "public_only",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "private_only",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "peer",
+                "value": "",
+                "type": "query",
+                "description": "Filters the response for channels with a target peer's pubkey. If peer is\nempty, all channels will be returned."
+              },
+              {
+                "name": "peer_alias_lookup",
+                "value": "",
+                "type": "query",
+                "description": "Informs the server if the peer alias lookup per channel should be\nenabled. It is turned off by default in order to avoid degradation of\nperformance for existing clients."
+              }
+            ]
+          },
+          "docs": "lncli: `listchannels`\nListChannels returns a description of all the open channels that this node\nis a participant in."
+        },
+        {
+          "info": {
+            "name": "OpenChannelSync is a synchronous version of the OpenChannel RPC call. This\ncall is meant to be consumed by clients to the REST proxy. As with all\nother sync calls, all byte slices are intended to be populated as hex\nencoded strings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels"
+          },
+          "docs": "OpenChannelSync is a synchronous version of the OpenChannel RPC call. This\ncall is meant to be consumed by clients to the REST proxy. As with all\nother sync calls, all byte slices are intended to be populated as hex\nencoded strings."
+        },
+        {
+          "info": {
+            "name": "lncli: `abandonchannel`\nAbandonChannel removes all channel state from the database except for a\nclose summary. This method can be used to get rid of permanently unusable\nchannels due to bugs fixed in newer versions of lnd. This method can also be\nused to remove externally funded channels where the funding transaction was\nnever broadcast. Only available for non-externally funded channels in dev\nbuild.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/channels/abandon/:channel_point.funding_txid_str/:channel_point.output_index",
+            "params": [
+              {
+                "name": "channel_point.funding_txid_str",
+                "value": "",
+                "type": "path",
+                "description": "Hex-encoded string representing the byte-reversed hash of the funding\ntransaction."
+              },
+              {
+                "name": "channel_point.output_index",
+                "value": "",
+                "type": "path",
+                "description": "The index of the output of the funding transaction"
+              },
+              {
+                "name": "channel_point.funding_txid_bytes",
+                "value": "",
+                "type": "query",
+                "description": "Txid of the funding transaction. When using REST, this field must be\nencoded as base64."
+              },
+              {
+                "name": "pending_funding_shim_only",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "i_know_what_i_am_doing",
+                "value": "",
+                "type": "query",
+                "description": "Override the requirement for being in dev mode by setting this to true and\nconfirming the user knows what they are doing and this is a potential foot\ngun to lose funds if used on active channels."
+              }
+            ]
+          },
+          "docs": "lncli: `abandonchannel`\nAbandonChannel removes all channel state from the database except for a\nclose summary. This method can be used to get rid of permanently unusable\nchannels due to bugs fixed in newer versions of lnd. This method can also be\nused to remove externally funded channels where the funding transaction was\nnever broadcast. Only available for non-externally funded channels in dev\nbuild."
+        },
+        {
+          "info": {
+            "name": "ChannelAcceptor dispatches a bi-directional streaming RPC in which\nOpenChannel requests are sent to the client and the client responds with\na boolean that tells LND whether or not to accept the channel. This allows\nnode operators to specify their own criteria for accepting inbound channels\nthrough a single persistent connection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/acceptor"
+          },
+          "docs": "ChannelAcceptor dispatches a bi-directional streaming RPC in which\nOpenChannel requests are sent to the client and the client responds with\na boolean that tells LND whether or not to accept the channel. This allows\nnode operators to specify their own criteria for accepting inbound channels\nthrough a single persistent connection."
+        },
+        {
+          "info": {
+            "name": "ExportAllChannelBackups returns static channel backups for all existing\nchannels known to lnd. A set of regular singular static channel backups for\neach channel are returned. Additionally, a multi-channel backup is returned\nas well, which contains a single encrypted blob containing the backups of\neach channel.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/backup"
+          },
+          "docs": "ExportAllChannelBackups returns static channel backups for all existing\nchannels known to lnd. A set of regular singular static channel backups for\neach channel are returned. Additionally, a multi-channel backup is returned\nas well, which contains a single encrypted blob containing the backups of\neach channel."
+        },
+        {
+          "info": {
+            "name": "lncli: `restorechanbackup`\nRestoreChannelBackups accepts a set of singular channel backups, or a\nsingle encrypted multi-chan backup and attempts to recover any funds\nremaining within the channel. If we are able to unpack the backup, then the\nnew channel will be shown under listchannels, as well as pending channels.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/backup/restore"
+          },
+          "docs": "lncli: `restorechanbackup`\nRestoreChannelBackups accepts a set of singular channel backups, or a\nsingle encrypted multi-chan backup and attempts to recover any funds\nremaining within the channel. If we are able to unpack the backup, then the\nnew channel will be shown under listchannels, as well as pending channels."
+        },
+        {
+          "info": {
+            "name": "SubscribeChannelBackups allows a client to sub-subscribe to the most up to\ndate information concerning the state of all channel backups. Each time a\nnew channel is added, we return the new set of channels, along with a\nmulti-chan backup containing the backup info for all channels. Each time a\nchannel is closed, we send a new update, which contains new new chan back\nups, but the updated set of encrypted multi-chan backups with the closed\nchannel(s) removed.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/backup/subscribe"
+          },
+          "docs": "SubscribeChannelBackups allows a client to sub-subscribe to the most up to\ndate information concerning the state of all channel backups. Each time a\nnew channel is added, we return the new set of channels, along with a\nmulti-chan backup containing the backup info for all channels. Each time a\nchannel is closed, we send a new update, which contains new new chan back\nups, but the updated set of encrypted multi-chan backups with the closed\nchannel(s) removed."
+        },
+        {
+          "info": {
+            "name": "lncli: `verifychanbackup`\nVerifyChanBackup allows a caller to verify the integrity of a channel backup\nsnapshot. This method will accept either a packed Single or a packed Multi.\nSpecifying both will result in an error.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/backup/verify"
+          },
+          "docs": "lncli: `verifychanbackup`\nVerifyChanBackup allows a caller to verify the integrity of a channel backup\nsnapshot. This method will accept either a packed Single or a packed Multi.\nSpecifying both will result in an error."
+        },
+        {
+          "info": {
+            "name": "lncli: `exportchanbackup`\nExportChannelBackup attempts to return an encrypted static channel backup\nfor the target channel identified by it channel point. The backup is\nencrypted with a key generated from the aezeed seed of the user. The\nreturned backup can either be restored using the RestoreChannelBackup\nmethod once lnd is running, or via the InitWallet and UnlockWallet methods\nfrom the WalletUnlocker service.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/backup/:chan_point.funding_txid_str/:chan_point.output_index",
+            "params": [
+              {
+                "name": "chan_point.funding_txid_str",
+                "value": "",
+                "type": "path",
+                "description": "Hex-encoded string representing the byte-reversed hash of the funding\ntransaction."
+              },
+              {
+                "name": "chan_point.output_index",
+                "value": "",
+                "type": "path",
+                "description": "The index of the output of the funding transaction"
+              },
+              {
+                "name": "chan_point.funding_txid_bytes",
+                "value": "",
+                "type": "query",
+                "description": "Txid of the funding transaction. When using REST, this field must be\nencoded as base64."
+              }
+            ]
+          },
+          "docs": "lncli: `exportchanbackup`\nExportChannelBackup attempts to return an encrypted static channel backup\nfor the target channel identified by it channel point. The backup is\nencrypted with a key generated from the aezeed seed of the user. The\nreturned backup can either be restored using the RestoreChannelBackup\nmethod once lnd is running, or via the InitWallet and UnlockWallet methods\nfrom the WalletUnlocker service."
+        },
+        {
+          "info": {
+            "name": "lncli: `batchopenchannel`\nBatchOpenChannel attempts to open multiple single-funded channels in a\nsingle transaction in an atomic way. This means either all channel open\nrequests succeed at once or all attempts are aborted if any of them fail.\nThis is the safer variant of using PSBTs to manually fund a batch of\nchannels through the OpenChannel RPC.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/batch"
+          },
+          "docs": "lncli: `batchopenchannel`\nBatchOpenChannel attempts to open multiple single-funded channels in a\nsingle transaction in an atomic way. This means either all channel open\nrequests succeed at once or all attempts are aborted if any of them fail.\nThis is the safer variant of using PSBTs to manually fund a batch of\nchannels through the OpenChannel RPC."
+        },
+        {
+          "info": {
+            "name": "lncli: `closedchannels`\nClosedChannels returns a description of all the closed channels that\nthis node was a participant in.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/closed",
+            "params": [
+              {
+                "name": "cooperative",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "local_force",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "remote_force",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "breach",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "funding_canceled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "abandoned",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "lncli: `closedchannels`\nClosedChannels returns a description of all the closed channels that\nthis node was a participant in."
+        },
+        {
+          "info": {
+            "name": "lncli: `pendingchannels`\nPendingChannels returns a list of all the channels that are currently\nconsidered \"pending\". A channel is pending if it has finished the funding\nworkflow and is waiting for confirmations for the funding txn, or is in the\nprocess of closure, either initiated cooperatively or non-cooperatively.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/pending",
+            "params": [
+              {
+                "name": "include_raw_tx",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to include the raw transaction hex for\nwaiting_close_channels."
+              }
+            ]
+          },
+          "docs": "lncli: `pendingchannels`\nPendingChannels returns a list of all the channels that are currently\nconsidered \"pending\". A channel is pending if it has finished the funding\nworkflow and is waiting for confirmations for the funding txn, or is in the\nprocess of closure, either initiated cooperatively or non-cooperatively."
+        },
+        {
+          "info": {
+            "name": "lncli: `openchannel`\nOpenChannel attempts to open a singly funded channel specified in the\nrequest to a remote peer. Users are able to specify a target number of\nblocks that the funding transaction should be confirmed in, or a manual fee\nrate to us for the funding transaction. If neither are specified, then a\nlax block confirmation target is used. Each OpenStatusUpdate will return\nthe pending channel ID of the in-progress channel. Depending on the\narguments specified in the OpenChannelRequest, this pending channel ID can\nthen be used to manually progress the channel funding flow.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/stream"
+          },
+          "docs": "lncli: `openchannel`\nOpenChannel attempts to open a singly funded channel specified in the\nrequest to a remote peer. Users are able to specify a target number of\nblocks that the funding transaction should be confirmed in, or a manual fee\nrate to us for the funding transaction. If neither are specified, then a\nlax block confirmation target is used. Each OpenStatusUpdate will return\nthe pending channel ID of the in-progress channel. Depending on the\narguments specified in the OpenChannelRequest, t"
+        },
+        {
+          "info": {
+            "name": "SubscribeChannelEvents creates a uni-directional stream from the server to\nthe client in which any updates relevant to the state of the channels are\nsent over. Events include new active channels, inactive channels, and closed\nchannels.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/channels/subscribe"
+          },
+          "docs": "SubscribeChannelEvents creates a uni-directional stream from the server to\nthe client in which any updates relevant to the state of the channels are\nsent over. Events include new active channels, inactive channels, and closed\nchannels."
+        },
+        {
+          "info": {
+            "name": "lncli: `sendpayment`\nDeprecated, use routerrpc.SendPaymentV2. SendPayment dispatches a\nbi-directional streaming RPC for sending payments through the Lightning\nNetwork. A single RPC invocation creates a persistent bi-directional\nstream allowing clients to rapidly send payments through the Lightning\nNetwork with a single persistent connection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/transaction-stream"
+          },
+          "docs": "lncli: `sendpayment`\nDeprecated, use routerrpc.SendPaymentV2. SendPayment dispatches a\nbi-directional streaming RPC for sending payments through the Lightning\nNetwork. A single RPC invocation creates a persistent bi-directional\nstream allowing clients to rapidly send payments through the Lightning\nNetwork with a single persistent connection."
+        },
+        {
+          "info": {
+            "name": "Deprecated, use routerrpc.SendPaymentV2. SendPaymentSync is the synchronous\nnon-streaming version of SendPayment. This RPC is intended to be consumed by\nclients of the REST proxy. Additionally, this RPC expects the destination's\npublic key and the payment hash (if any) to be encoded as hex strings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/transactions"
+          },
+          "docs": "Deprecated, use routerrpc.SendPaymentV2. SendPaymentSync is the synchronous\nnon-streaming version of SendPayment. This RPC is intended to be consumed by\nclients of the REST proxy. Additionally, this RPC expects the destination's\npublic key and the payment hash (if any) to be encoded as hex strings."
+        },
+        {
+          "info": {
+            "name": "Deprecated, use routerrpc.SendToRouteV2. SendToRouteSync is a synchronous\nversion of SendToRoute. It Will block until the payment either fails or\nsucceeds.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/channels/transactions/route"
+          },
+          "docs": "Deprecated, use routerrpc.SendToRouteV2. SendToRouteSync is a synchronous\nversion of SendToRoute. It Will block until the payment either fails or\nsucceeds."
+        },
+        {
+          "info": {
+            "name": "lncli: `closechannel`\nCloseChannel attempts to close an active channel identified by its channel\noutpoint (ChannelPoint). The actions of this method can additionally be\naugmented to attempt a force close after a timeout period in the case of an\ninactive peer. If a non-force close (cooperative closure) is requested,\nthen the user can specify either a target number of blocks until the\nclosure transaction is confirmed, or a manual fee rate. If neither are\nspecified, then a default lax, block confirmation target is used.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/channels/:channel_point.funding_txid_str/:channel_point.output_index",
+            "params": [
+              {
+                "name": "channel_point.funding_txid_str",
+                "value": "",
+                "type": "path",
+                "description": "Hex-encoded string representing the byte-reversed hash of the funding\ntransaction."
+              },
+              {
+                "name": "channel_point.output_index",
+                "value": "",
+                "type": "path",
+                "description": "The index of the output of the funding transaction"
+              },
+              {
+                "name": "channel_point.funding_txid_bytes",
+                "value": "",
+                "type": "query",
+                "description": "Txid of the funding transaction. When using REST, this field must be\nencoded as base64."
+              },
+              {
+                "name": "force",
+                "value": "",
+                "type": "query",
+                "description": "If true, then the channel will be closed forcibly. This means the\ncurrent commitment transaction will be signed and broadcast."
+              },
+              {
+                "name": "target_conf",
+                "value": "",
+                "type": "query",
+                "description": "The target number of blocks that the closure transaction should be\nconfirmed by."
+              },
+              {
+                "name": "sat_per_byte",
+                "value": "",
+                "type": "query",
+                "description": "Deprecated, use sat_per_vbyte.\nA manual fee rate set in sat/vbyte that should be used when crafting the\nclosure transaction."
+              },
+              {
+                "name": "delivery_address",
+                "value": "",
+                "type": "query",
+                "description": "An optional address to send funds to in the case of a cooperative close.\nIf the channel was opened with an upfront shutdown script and this field\nis set, the request to close will fail because the channel must pay out\nto the upfront shutdown addresss."
+              },
+              {
+                "name": "sat_per_vbyte",
+                "value": "",
+                "type": "query",
+                "description": "A manual fee rate set in sat/vbyte that should be used when crafting the\nclosure transaction."
+              },
+              {
+                "name": "max_fee_per_vbyte",
+                "value": "",
+                "type": "query",
+                "description": "The maximum fee rate the closer is willing to pay.\n\nNOTE: This field is only respected if we're the initiator of the channel."
+              },
+              {
+                "name": "no_wait",
+                "value": "",
+                "type": "query",
+                "description": "If true, then the rpc call will not block while it awaits a closing txid\nto be broadcasted to the mempool. To obtain the closing tx one has to\nlisten to the stream for the particular updates. Moreover if a coop close\nis specified and this flag is set to true the coop closing flow will be\ninitiated even if HTLCs are active on the channel. The channel will wait\nuntil all HTLCs are resolved and then start the coop closing process. The\nchannel will be disabled in the meantime and will disallow any new HTLCs."
+              }
+            ]
+          },
+          "docs": "lncli: `closechannel`\nCloseChannel attempts to close an active channel identified by its channel\noutpoint (ChannelPoint). The actions of this method can additionally be\naugmented to attempt a force close after a timeout period in the case of an\ninactive peer. If a non-force close (cooperative closure) is requested,\nthen the user can specify either a target number of blocks until the\nclosure transaction is confirmed, or a manual fee rate. If neither are\nspecified, then a default lax, block confir"
+        },
+        {
+          "info": {
+            "name": "lncli: `updatechanpolicy`\nUpdateChannelPolicy allows the caller to update the fee schedule and\nchannel policies for all channels globally, or a particular channel.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/chanpolicy"
+          },
+          "docs": "lncli: `updatechanpolicy`\nUpdateChannelPolicy allows the caller to update the fee schedule and\nchannel policies for all channels globally, or a particular channel."
+        },
+        {
+          "info": {
+            "name": "lncli: `sendcustom`\nSendCustomMessage sends a custom peer message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/custommessage"
+          },
+          "docs": "lncli: `sendcustom`\nSendCustomMessage sends a custom peer message."
+        },
+        {
+          "info": {
+            "name": "lncli: `subscribecustom`\nSubscribeCustomMessages subscribes to a stream of incoming custom peer\nmessages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/custommessage/subscribe"
+          },
+          "docs": "To include messages with type outside of the custom range (>= 32768) lnd\nneeds to be compiled with  the `dev` build tag, and the message type to\noverride should be specified in lnd's experimental protocol configuration."
+        },
+        {
+          "info": {
+            "name": "lncli: `debuglevel`\nDebugLevel allows a caller to programmatically set the logging verbosity of\nlnd. The logging can be targeted according to a coarse daemon-wide logging\nlevel, or in a granular fashion to specify the logging for a target\nsub-system.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/debuglevel"
+          },
+          "docs": "lncli: `debuglevel`\nDebugLevel allows a caller to programmatically set the logging verbosity of\nlnd. The logging can be targeted according to a coarse daemon-wide logging\nlevel, or in a granular fashion to specify the logging for a target\nsub-system."
+        },
+        {
+          "info": {
+            "name": "lncli: `feereport`\nFeeReport allows the caller to obtain a report detailing the current fee\nschedule enforced by the node globally for each channel.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/fees"
+          },
+          "docs": "lncli: `feereport`\nFeeReport allows the caller to obtain a report detailing the current fee\nschedule enforced by the node globally for each channel."
+        },
+        {
+          "info": {
+            "name": "FundingStateStep is an advanced funding related call that allows the caller\nto either execute some preparatory steps for a funding workflow, or\nmanually progress a funding workflow. The primary way a funding flow is\nidentified is via its pending channel ID. As an example, this method can be\nused to specify that we're expecting a funding flow for a particular\npending channel ID, for which we need to use specific parameters.\nAlternatively, this can be used to interactively drive PSBT signing for\nfunding for partially complete funding transactions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/funding/step"
+          },
+          "docs": "FundingStateStep is an advanced funding related call that allows the caller\nto either execute some preparatory steps for a funding workflow, or\nmanually progress a funding workflow. The primary way a funding flow is\nidentified is via its pending channel ID. As an example, this method can be\nused to specify that we're expecting a funding flow for a particular\npending channel ID, for which we need to use specific parameters.\nAlternatively, this can be used to interactively drive PSBT signing for\nf"
+        },
+        {
+          "info": {
+            "name": "lncli: 'getdebuginfo'\nGetDebugInfo returns debug information concerning the state of the daemon\nand its subsystems. This includes the full configuration and the latest log\nentries from the log file.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/getdebuginfo",
+            "params": [
+              {
+                "name": "include_log",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, the log file content will be included in the response.\nBy default, only the config information is returned."
+              }
+            ]
+          },
+          "docs": "lncli: 'getdebuginfo'\nGetDebugInfo returns debug information concerning the state of the daemon\nand its subsystems. This includes the full configuration and the latest log\nentries from the log file."
+        },
+        {
+          "info": {
+            "name": "lncli: `getinfo`\nGetInfo returns general information concerning the lightning node including\nit's identity pubkey, alias, the chains it is connected to, and information\nconcerning the number of open+pending channels.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/getinfo"
+          },
+          "docs": "lncli: `getinfo`\nGetInfo returns general information concerning the lightning node including\nit's identity pubkey, alias, the chains it is connected to, and information\nconcerning the number of open+pending channels."
+        },
+        {
+          "info": {
+            "name": "* lncli: `getrecoveryinfo`\nGetRecoveryInfo returns information concerning the recovery mode including\nwhether it's in a recovery mode, whether the recovery is finished, and the\nprogress made so far.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/getrecoveryinfo"
+          },
+          "docs": "* lncli: `getrecoveryinfo`\nGetRecoveryInfo returns information concerning the recovery mode including\nwhether it's in a recovery mode, whether the recovery is finished, and the\nprogress made so far."
+        },
+        {
+          "info": {
+            "name": "lncli: `describegraph`\nDescribeGraph returns a description of the latest graph state from the\npoint of view of the node. The graph information is partitioned into two\ncomponents: all the nodes/vertexes, and all the edges that connect the\nvertexes themselves. As this is a directed graph, the edges also contain\nthe node directional specific routing policy which includes: the time lock\ndelta, fee information, etc.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph",
+            "params": [
+              {
+                "name": "include_unannounced",
+                "value": "",
+                "type": "query",
+                "description": "Whether unannounced channels are included in the response or not. If set,\nunannounced channels are included. Unannounced channels are both private\nchannels, and public channels that are not yet announced to the network."
+              },
+              {
+                "name": "include_auth_proof",
+                "value": "",
+                "type": "query",
+                "description": "If true, will include announcements' signatures into ChannelEdge."
+              }
+            ]
+          },
+          "docs": "lncli: `describegraph`\nDescribeGraph returns a description of the latest graph state from the\npoint of view of the node. The graph information is partitioned into two\ncomponents: all the nodes/vertexes, and all the edges that connect the\nvertexes themselves. As this is a directed graph, the edges also contain\nthe node directional specific routing policy which includes: the time lock\ndelta, fee information, etc."
+        },
+        {
+          "info": {
+            "name": "lncli: `getchaninfo`\nGetChanInfo returns the latest authenticated network announcement for the\ngiven channel identified by its channel ID: an 8-byte integer which\nuniquely identifies the location of transaction's funding output within the\nblockchain.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/edge/:chan_id",
+            "params": [
+              {
+                "name": "chan_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique channel ID for the channel. The first 3 bytes are the block\nheight, the next 3 the index within the block, and the last 2 bytes are the\noutput index for the channel."
+              },
+              {
+                "name": "chan_point",
+                "value": "",
+                "type": "query",
+                "description": "The channel point of the channel in format funding_txid:output_index. If\nchan_id is specified, this field is ignored."
+              },
+              {
+                "name": "include_auth_proof",
+                "value": "",
+                "type": "query",
+                "description": "If true, will include announcements' signatures into ChannelEdge."
+              }
+            ]
+          },
+          "docs": "lncli: `getchaninfo`\nGetChanInfo returns the latest authenticated network announcement for the\ngiven channel identified by its channel ID: an 8-byte integer which\nuniquely identifies the location of transaction's funding output within the\nblockchain."
+        },
+        {
+          "info": {
+            "name": "lncli: `getnetworkinfo`\nGetNetworkInfo returns some basic stats about the known channel graph from\nthe point of view of the node.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/info"
+          },
+          "docs": "lncli: `getnetworkinfo`\nGetNetworkInfo returns some basic stats about the known channel graph from\nthe point of view of the node."
+        },
+        {
+          "info": {
+            "name": "lncli: `getnodeinfo`\nGetNodeInfo returns the latest advertised, aggregated, and authenticated\nchannel information for the specified node identified by its public key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/node/:pub_key",
+            "params": [
+              {
+                "name": "pub_key",
+                "value": "",
+                "type": "path",
+                "description": "The 33-byte hex-encoded compressed public of the target node"
+              },
+              {
+                "name": "include_channels",
+                "value": "",
+                "type": "query",
+                "description": "If true, will include all known channels associated with the node."
+              },
+              {
+                "name": "include_auth_proof",
+                "value": "",
+                "type": "query",
+                "description": "If true, will include announcements' signatures into ChannelEdge.\nDepends on include_channels."
+              }
+            ]
+          },
+          "docs": "lncli: `getnodeinfo`\nGetNodeInfo returns the latest advertised, aggregated, and authenticated\nchannel information for the specified node identified by its public key."
+        },
+        {
+          "info": {
+            "name": "lncli: `getnodemetrics`\nGetNodeMetrics returns node metrics calculated from the graph. Currently\nthe only supported metric is betweenness centrality of individual nodes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/nodemetrics",
+            "params": [
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "The requested node metrics."
+              }
+            ]
+          },
+          "docs": "lncli: `getnodemetrics`\nGetNodeMetrics returns node metrics calculated from the graph. Currently\nthe only supported metric is betweenness centrality of individual nodes."
+        },
+        {
+          "info": {
+            "name": "lncli: `queryroutes`\nQueryRoutes attempts to query the daemon's Channel Router for a possible\nroute to a target destination capable of carrying a specific amount of\nsatoshis. The returned route contains the full details required to craft and\nsend an HTLC, also including the necessary information that should be\npresent within the Sphinx packet encapsulated within the HTLC.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/routes/:pub_key/:amt",
+            "params": [
+              {
+                "name": "pub_key",
+                "value": "",
+                "type": "path",
+                "description": "The 33-byte hex-encoded public key for the payment destination"
+              },
+              {
+                "name": "amt",
+                "value": "",
+                "type": "path",
+                "description": "The amount to send expressed in satoshis.\n\nThe fields amt and amt_msat are mutually exclusive."
+              },
+              {
+                "name": "amt_msat",
+                "value": "",
+                "type": "query",
+                "description": "The amount to send expressed in millisatoshis.\n\nThe fields amt and amt_msat are mutually exclusive."
+              },
+              {
+                "name": "final_cltv_delta",
+                "value": "",
+                "type": "query",
+                "description": "An optional CLTV delta from the current height that should be used for the\ntimelock of the final hop. Note that unlike SendPayment, QueryRoutes does\nnot add any additional block padding on top of final_ctlv_delta. This\npadding of a few blocks needs to be added manually or otherwise failures may\nhappen when a block comes in while the payment is in flight.\n\nNote: must not be set if making a payment to a blinded path (delta is\nset by the aggregate parameters provided by blinded_payment_paths)"
+              },
+              {
+                "name": "fee_limit.fixed",
+                "value": "",
+                "type": "query",
+                "description": "The fee limit expressed as a fixed amount of satoshis.\n\nThe fields fixed and fixed_msat are mutually exclusive."
+              },
+              {
+                "name": "fee_limit.fixed_msat",
+                "value": "",
+                "type": "query",
+                "description": "The fee limit expressed as a fixed amount of millisatoshis.\n\nThe fields fixed and fixed_msat are mutually exclusive."
+              },
+              {
+                "name": "fee_limit.percent",
+                "value": "",
+                "type": "query",
+                "description": "The fee limit expressed as a percentage of the payment amount."
+              },
+              {
+                "name": "ignored_nodes",
+                "value": "",
+                "type": "query",
+                "description": "A list of nodes to ignore during path finding. When using REST, these fields\nmust be encoded as base64."
+              },
+              {
+                "name": "source_pub_key",
+                "value": "",
+                "type": "query",
+                "description": "The source node where the request route should originated from. If empty,\nself is assumed."
+              },
+              {
+                "name": "use_mission_control",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, edge probabilities from mission control will be used to get\nthe optimal route."
+              },
+              {
+                "name": "cltv_limit",
+                "value": "",
+                "type": "query",
+                "description": "An optional maximum total time lock for the route. If the source is empty or\nourselves, this should not exceed lnd's `--max-cltv-expiry` setting. If\nzero, then the value of `--max-cltv-expiry` is used as the limit."
+              },
+              {
+                "name": "dest_custom_records[string]",
+                "value": "",
+                "type": "query",
+                "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18"
+              },
+              {
+                "name": "outgoing_chan_id",
+                "value": "",
+                "type": "query",
+                "description": "Deprecated, use outgoing_chan_ids. The channel id of the channel that must\nbe taken to the first hop. If zero, any channel may be used."
+              },
+              {
+                "name": "last_hop_pubkey",
+                "value": "",
+                "type": "query",
+                "description": "The pubkey of the last hop of the route. If empty, any hop may be used."
+              },
+              {
+                "name": "dest_features",
+                "value": "",
+                "type": "query",
+                "description": "Features assumed to be supported by the final node. All transitive feature\ndependencies must also be set properly. For a given feature bit pair, either\noptional or remote may be set, but not both. If this field is nil or empty,\nthe router will try to load destination features from the graph as a\nfallback.\n\nNote: must not be set if making a payment to a blinded route (features\nare provided in blinded_payment_paths)."
+              },
+              {
+                "name": "time_pref",
+                "value": "",
+                "type": "query",
+                "description": "The time preference for this payment. Set to -1 to optimize for fees\nonly, to 1 to optimize for reliability only or a value inbetween for a mix."
+              },
+              {
+                "name": "outgoing_chan_ids",
+                "value": "",
+                "type": "query",
+                "description": "The channel ids of the channels allowed for the first hop. If empty, any\nchannel may be used."
+              }
+            ]
+          },
+          "docs": "When using REST, the `dest_custom_records` map type can be set by appending\n`&dest_custom_records[<record_number>]=<record_data_base64_url_encoded>`\nto the URL. Unfortunately this map type doesn't appear in the REST API\ndocumentation because of a bug in the grpc-gateway library."
+        },
+        {
+          "info": {
+            "name": "lncli: `queryroutes`\nQueryRoutes attempts to query the daemon's Channel Router for a possible\nroute to a target destination capable of carrying a specific amount of\nsatoshis. The returned route contains the full details required to craft and\nsend an HTLC, also including the necessary information that should be\npresent within the Sphinx packet encapsulated within the HTLC.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/graph/routes/:pub_key/:amt",
+            "params": [
+              {
+                "name": "pub_key",
+                "value": "",
+                "type": "path",
+                "description": "The 33-byte hex-encoded public key for the payment destination"
+              },
+              {
+                "name": "amt",
+                "value": "",
+                "type": "path",
+                "description": "The amount to send expressed in satoshis.\n\nThe fields amt and amt_msat are mutually exclusive."
+              }
+            ]
+          },
+          "docs": "When using REST, the `dest_custom_records` map type can be set by appending\n`&dest_custom_records[<record_number>]=<record_data_base64_url_encoded>`\nto the URL. Unfortunately this map type doesn't appear in the REST API\ndocumentation because of a bug in the grpc-gateway library."
+        },
+        {
+          "info": {
+            "name": "SubscribeChannelGraph launches a streaming RPC that allows the caller to\nreceive notifications upon any changes to the channel graph topology from\nthe point of view of the responding node. Events notified include: new\nnodes coming online, nodes updating their authenticated attributes, new\nchannels being advertised, updates in the routing policy for a directional\nchannel edge, and when channels are closed on-chain.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/graph/subscribe"
+          },
+          "docs": "SubscribeChannelGraph launches a streaming RPC that allows the caller to\nreceive notifications upon any changes to the channel graph topology from\nthe point of view of the responding node. Events notified include: new\nnodes coming online, nodes updating their authenticated attributes, new\nchannels being advertised, updates in the routing policy for a directional\nchannel edge, and when channels are closed on-chain."
+        },
+        {
+          "info": {
+            "name": "LookupHtlcResolution retrieves a final htlc resolution from the database.\nIf the htlc has no final resolution yet, a NotFound grpc status code is\nreturned.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/htlc-resolution/:chan_id/:htlc_index",
+            "params": [
+              {
+                "name": "chan_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "htlc_index",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "LookupHtlcResolution retrieves a final htlc resolution from the database.\nIf the htlc has no final resolution yet, a NotFound grpc status code is\nreturned."
+        },
+        {
+          "info": {
+            "name": "lncli: `lookupinvoice`\nLookupInvoice attempts to look up an invoice according to its payment hash.\nThe passed payment hash *must* be exactly 32 bytes, if not, an error is\nreturned.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/invoice/:r_hash_str",
+            "params": [
+              {
+                "name": "r_hash_str",
+                "value": "",
+                "type": "path",
+                "description": "The hex-encoded payment hash of the invoice to be looked up. The passed\npayment hash must be exactly 32 bytes, otherwise an error is returned.\nDeprecated now that the REST gateway supports base64 encoding of bytes\nfields."
+              },
+              {
+                "name": "r_hash",
+                "value": "",
+                "type": "query",
+                "description": "The payment hash of the invoice to be looked up. When using REST, this field\nmust be encoded as base64."
+              }
+            ]
+          },
+          "docs": "lncli: `lookupinvoice`\nLookupInvoice attempts to look up an invoice according to its payment hash.\nThe passed payment hash *must* be exactly 32 bytes, if not, an error is\nreturned."
+        },
+        {
+          "info": {
+            "name": "lncli: `listinvoices`\nListInvoices returns a list of all the invoices currently stored within the\ndatabase. Any active debug invoices are ignored. It has full support for\npaginated responses, allowing users to query for specific invoices through\ntheir add_index. This can be done by using either the first_index_offset or\nlast_index_offset fields included in the response as the index_offset of the\nnext request. By default, the first 100 invoices created will be returned.\nBackwards pagination is also supported through the Reversed flag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/invoices",
+            "params": [
+              {
+                "name": "pending_only",
+                "value": "",
+                "type": "query",
+                "description": "If set, only invoices that are not settled and not canceled will be returned\nin the response."
+              },
+              {
+                "name": "index_offset",
+                "value": "",
+                "type": "query",
+                "description": "The index of an invoice that will be used as either the start or end of a\nquery to determine which invoices should be returned in the response."
+              },
+              {
+                "name": "num_max_invoices",
+                "value": "",
+                "type": "query",
+                "description": "The max number of invoices to return in the response to this query."
+              },
+              {
+                "name": "reversed",
+                "value": "",
+                "type": "query",
+                "description": "If set, the invoices returned will result from seeking backwards from the\nspecified index offset. This can be used to paginate backwards."
+              },
+              {
+                "name": "creation_date_start",
+                "value": "",
+                "type": "query",
+                "description": "If set, returns all invoices with a creation date greater than or equal\nto it. Measured in seconds since the unix epoch."
+              },
+              {
+                "name": "creation_date_end",
+                "value": "",
+                "type": "query",
+                "description": "If set, returns all invoices with a creation date less than or equal to\nit. Measured in seconds since the unix epoch."
+              }
+            ]
+          },
+          "docs": "lncli: `listinvoices`\nListInvoices returns a list of all the invoices currently stored within the\ndatabase. Any active debug invoices are ignored. It has full support for\npaginated responses, allowing users to query for specific invoices through\ntheir add_index. This can be done by using either the first_index_offset or\nlast_index_offset fields included in the response as the index_offset of the\nnext request. By default, the first 100 invoices created will be returned.\nBackwards pagination is al"
+        },
+        {
+          "info": {
+            "name": "lncli: `addinvoice`\nAddInvoice attempts to add a new invoice to the invoice database. Any\nduplicated invoices are rejected, therefore all invoices *must* have a\nunique payment preimage.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/invoices"
+          },
+          "docs": "lncli: `addinvoice`\nAddInvoice attempts to add a new invoice to the invoice database. Any\nduplicated invoices are rejected, therefore all invoices *must* have a\nunique payment preimage."
+        },
+        {
+          "info": {
+            "name": "lncli: `deletecanceledinvoice`\nDeleteCanceledInvoice removes a canceled invoice from the database. If the\ninvoice is not in the canceled state, an error will be returned.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/invoices",
+            "params": [
+              {
+                "name": "invoice_hash",
+                "value": "",
+                "type": "query",
+                "description": "Invoice payment hash to delete."
+              }
+            ]
+          },
+          "docs": "lncli: `deletecanceledinvoice`\nDeleteCanceledInvoice removes a canceled invoice from the database. If the\ninvoice is not in the canceled state, an error will be returned."
+        },
+        {
+          "info": {
+            "name": "SubscribeInvoices returns a uni-directional stream (server -> client) for\nnotifying the client of newly added/settled invoices. The caller can\noptionally specify the add_index and/or the settle_index. If the add_index\nis specified, then we'll first start by sending add invoice events for all\ninvoices with an add_index greater than the specified value. If the\nsettle_index is specified, then next, we'll send out all settle events for\ninvoices with a settle_index greater than the specified value. One or both\nof these fields can be set. If no fields are set, then we'll only send out\nthe latest add/settle events.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/invoices/subscribe",
+            "params": [
+              {
+                "name": "add_index",
+                "value": "",
+                "type": "query",
+                "description": "If specified (non-zero), then we'll first start by sending out\nnotifications for all added indexes with an add_index greater than this\nvalue. This allows callers to catch up on any events they missed while they\nweren't connected to the streaming RPC."
+              },
+              {
+                "name": "settle_index",
+                "value": "",
+                "type": "query",
+                "description": "If specified (non-zero), then we'll first start by sending out\nnotifications for all settled indexes with an settle_index greater than\nthis value. This allows callers to catch up on any events they missed while\nthey weren't connected to the streaming RPC."
+              }
+            ]
+          },
+          "docs": "SubscribeInvoices returns a uni-directional stream (server -> client) for\nnotifying the client of newly added/settled invoices. The caller can\noptionally specify the add_index and/or the settle_index. If the add_index\nis specified, then we'll first start by sending add invoice events for all\ninvoices with an add_index greater than the specified value. If the\nsettle_index is specified, then next, we'll send out all settle events for\ninvoices with a settle_index greater than the specified value. O"
+        },
+        {
+          "info": {
+            "name": "lncli: `bakemacaroon`\nBakeMacaroon allows the creation of a new macaroon with custom read and\nwrite permissions. No first-party caveats are added since this can be done\noffline.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/macaroon"
+          },
+          "docs": "lncli: `bakemacaroon`\nBakeMacaroon allows the creation of a new macaroon with custom read and\nwrite permissions. No first-party caveats are added since this can be done\noffline."
+        },
+        {
+          "info": {
+            "name": "CheckMacaroonPermissions checks whether the provided macaroon contains all\nthe provided permissions. If the macaroon is valid (e.g. all caveats are\nsatisfied), and all permissions provided in the request are met, then\nthis RPC returns true.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/macaroon/checkpermissions"
+          },
+          "docs": "CheckMacaroonPermissions checks whether the provided macaroon contains all\nthe provided permissions. If the macaroon is valid (e.g. all caveats are\nsatisfied), and all permissions provided in the request are met, then\nthis RPC returns true."
+        },
+        {
+          "info": {
+            "name": "lncli: `listmacaroonids`\nListMacaroonIDs returns all root key IDs that are in use.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/macaroon/ids"
+          },
+          "docs": "lncli: `listmacaroonids`\nListMacaroonIDs returns all root key IDs that are in use."
+        },
+        {
+          "info": {
+            "name": "lncli: `listpermissions`\nListPermissions lists all RPC method URIs and their required macaroon\npermissions to access them.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/macaroon/permissions"
+          },
+          "docs": "lncli: `listpermissions`\nListPermissions lists all RPC method URIs and their required macaroon\npermissions to access them."
+        },
+        {
+          "info": {
+            "name": "lncli: `deletemacaroonid`\nDeleteMacaroonID deletes the specified macaroon ID and invalidates all\nmacaroons derived from that ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/macaroon/:root_key_id",
+            "params": [
+              {
+                "name": "root_key_id",
+                "value": "",
+                "type": "path",
+                "description": "The root key ID to be removed."
+              }
+            ]
+          },
+          "docs": "lncli: `deletemacaroonid`\nDeleteMacaroonID deletes the specified macaroon ID and invalidates all\nmacaroons derived from that ID."
+        },
+        {
+          "info": {
+            "name": "RegisterRPCMiddleware adds a new gRPC middleware to the interceptor chain. A\ngRPC middleware is software component external to lnd that aims to add\nadditional business logic to lnd by observing/intercepting/validating\nincoming gRPC client requests and (if needed) replacing/overwriting outgoing\nmessages before they're sent to the client. When registering the middleware\nmust identify itself and indicate what custom macaroon caveats it wants to\nbe responsible for. Only requests that contain a macaroon with that specific\ncustom caveat are then sent to the middleware for inspection. The other\noption is to register for the read-only mode in which all requests/responses\nare forwarded for interception to the middleware but the middleware is not\nallowed to modify any responses. As a security measure, _no_ middleware can\nmodify responses for requests made with _unencumbered_ macaroons!",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/middleware",
+            "params": [
+              {
+                "name": "ref_msg_id",
+                "value": "",
+                "type": "query",
+                "description": "The request message ID this response refers to. Must always be set when\ngiving feedback to an intercept but is ignored for the initial registration\nmessage."
+              },
+              {
+                "name": "register.middleware_name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the middleware to register. The name should be as informative\nas possible and is logged on registration."
+              },
+              {
+                "name": "register.custom_macaroon_caveat_name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the custom macaroon caveat that this middleware is responsible\nfor. Only requests/responses that contain a macaroon with the registered\ncustom caveat are forwarded for interception to the middleware. The\nexception being the read-only mode: All requests/responses are forwarded to\na middleware that requests read-only access but such a middleware won't be\nallowed to _alter_ responses. As a security measure, _no_ middleware can\nchange responses to requests made with _unencumbered_ macaroons!\nNOTE: Cannot be used at the same time as read_only_mode."
+              },
+              {
+                "name": "register.read_only_mode",
+                "value": "",
+                "type": "query",
+                "description": "Instead of defining a custom macaroon caveat name a middleware can register\nitself for read-only access only. In that mode all requests/responses are\nforwarded to the middleware but the middleware isn't allowed to alter any of\nthe responses.\nNOTE: Cannot be used at the same time as custom_macaroon_caveat_name."
+              },
+              {
+                "name": "feedback.error",
+                "value": "",
+                "type": "query",
+                "description": "The error to return to the user. If this is non-empty, the incoming gRPC\nstream/request is aborted and the error is returned to the gRPC client. If\nthis value is empty, it means the middleware accepts the stream/request/\nresponse and the processing of it can continue."
+              },
+              {
+                "name": "feedback.replace_response",
+                "value": "",
+                "type": "query",
+                "description": "A boolean indicating that the gRPC message should be replaced/overwritten.\nThis boolean is needed because in protobuf an empty message is serialized as\na 0-length or nil byte slice and we wouldn't be able to distinguish between\nan empty replacement message and the \"don't replace anything\" case."
+              },
+              {
+                "name": "feedback.replacement_serialized",
+                "value": "",
+                "type": "query",
+                "description": "If the replace_response field is set to true, this field must contain the\nbinary serialized gRPC message in the protobuf format."
+              }
+            ]
+          },
+          "docs": "RegisterRPCMiddleware adds a new gRPC middleware to the interceptor chain. A\ngRPC middleware is software component external to lnd that aims to add\nadditional business logic to lnd by observing/intercepting/validating\nincoming gRPC client requests and (if needed) replacing/overwriting outgoing\nmessages before they're sent to the client. When registering the middleware\nmust identify itself and indicate what custom macaroon caveats it wants to\nbe responsible for. Only requests that contain a macar"
+        },
+        {
+          "info": {
+            "name": "lncli: `newaddress`\nNewAddress creates a new address under control of the local wallet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/newaddress",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "The type of address to generate."
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "The name of the account to generate a new address for. If empty, the\ndefault wallet account is used."
+              }
+            ]
+          },
+          "docs": "lncli: `newaddress`\nNewAddress creates a new address under control of the local wallet."
+        },
+        {
+          "info": {
+            "name": "lncli: `sendonion`\nSendOnionMessage sends an onion message to a peer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/onionmessage"
+          },
+          "docs": "lncli: `sendonion`\nSendOnionMessage sends an onion message to a peer."
+        },
+        {
+          "info": {
+            "name": "lncli: `subscribeonion`\nSubscribeOnionMessages subscribes to a stream of incoming onion messages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/onionmessage/subscribe"
+          },
+          "docs": "lncli: `subscribeonion`\nSubscribeOnionMessages subscribes to a stream of incoming onion messages."
+        },
+        {
+          "info": {
+            "name": "lncli: `deletepayments`\nDeletePayment deletes an outgoing payment from DB. Note that it will not\nattempt to delete an In-Flight payment, since that would be unsafe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/payment",
+            "params": [
+              {
+                "name": "payment_hash",
+                "value": "",
+                "type": "query",
+                "description": "Payment hash to delete."
+              },
+              {
+                "name": "failed_htlcs_only",
+                "value": "",
+                "type": "query",
+                "description": "Only delete failed HTLCs from the payment, not the payment itself."
+              }
+            ]
+          },
+          "docs": "lncli: `deletepayments`\nDeletePayment deletes an outgoing payment from DB. Note that it will not\nattempt to delete an In-Flight payment, since that would be unsafe."
+        },
+        {
+          "info": {
+            "name": "lncli: `listpayments`\nListPayments returns a list of all outgoing payments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/payments",
+            "params": [
+              {
+                "name": "include_incomplete",
+                "value": "",
+                "type": "query",
+                "description": "If true, then return payments that have not yet fully completed. This means\nthat pending payments, as well as failed payments will show up if this\nfield is set to true. This flag doesn't change the meaning of the indices,\nwhich are tied to individual payments."
+              },
+              {
+                "name": "index_offset",
+                "value": "",
+                "type": "query",
+                "description": "The index of a payment that will be used as either the start or end of a\nquery to determine which payments should be returned in the response. The\nindex_offset is exclusive. In the case of a zero index_offset, the query\nwill start with the oldest payment when paginating forwards, or will end\nwith the most recent payment when paginating backwards."
+              },
+              {
+                "name": "max_payments",
+                "value": "",
+                "type": "query",
+                "description": "The maximal number of payments returned in the response to this query."
+              },
+              {
+                "name": "reversed",
+                "value": "",
+                "type": "query",
+                "description": "If set, the payments returned will result from seeking backwards from the\nspecified index offset. This can be used to paginate backwards. The order\nof the returned payments is always oldest first (ascending index order)."
+              },
+              {
+                "name": "count_total_payments",
+                "value": "",
+                "type": "query",
+                "description": "If set, all payments (complete and incomplete, independent of the\nmax_payments parameter) will be counted. Note that setting this to true will\nincrease the run time of the call significantly on systems that have a lot\nof payments, as all of them have to be iterated through to be counted."
+              },
+              {
+                "name": "creation_date_start",
+                "value": "",
+                "type": "query",
+                "description": "If set, returns all payments with a creation date greater than or equal\nto it. Measured in seconds since the unix epoch."
+              },
+              {
+                "name": "creation_date_end",
+                "value": "",
+                "type": "query",
+                "description": "If set, returns all payments with a creation date less than or equal to\nit. Measured in seconds since the unix epoch."
+              },
+              {
+                "name": "omit_hops",
+                "value": "",
+                "type": "query",
+                "description": "If set, omit hop-level route data for HTLC attempts to reduce query\ncost and response size."
+              }
+            ]
+          },
+          "docs": "lncli: `listpayments`\nListPayments returns a list of all outgoing payments."
+        },
+        {
+          "info": {
+            "name": "lncli: `deletepayments --all`\nDeleteAllPayments deletes all outgoing payments from DB. Note that it will\nnot attempt to delete In-Flight payments, since that would be unsafe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/payments",
+            "params": [
+              {
+                "name": "failed_payments_only",
+                "value": "",
+                "type": "query",
+                "description": "Only delete failed payments."
+              },
+              {
+                "name": "failed_htlcs_only",
+                "value": "",
+                "type": "query",
+                "description": "Only delete failed HTLCs from payments, not the payment itself."
+              },
+              {
+                "name": "all_payments",
+                "value": "",
+                "type": "query",
+                "description": "Delete all payments. NOTE: Using this option requires careful\nconsideration as it is a destructive operation."
+              }
+            ]
+          },
+          "docs": "lncli: `deletepayments --all`\nDeleteAllPayments deletes all outgoing payments from DB. Note that it will\nnot attempt to delete In-Flight payments, since that would be unsafe."
+        },
+        {
+          "info": {
+            "name": "lncli: `decodepayreq`\nDecodePayReq takes an encoded payment request string and attempts to decode\nit, returning a full description of the conditions encoded within the\npayment request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/payreq/:pay_req",
+            "params": [
+              {
+                "name": "pay_req",
+                "value": "",
+                "type": "path",
+                "description": "The payment request string to be decoded"
+              }
+            ]
+          },
+          "docs": "lncli: `decodepayreq`\nDecodePayReq takes an encoded payment request string and attempts to decode\nit, returning a full description of the conditions encoded within the\npayment request."
+        },
+        {
+          "info": {
+            "name": "lncli: `listpeers`\nListPeers returns a verbose listing of all currently active peers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/peers",
+            "params": [
+              {
+                "name": "latest_error",
+                "value": "",
+                "type": "query",
+                "description": "If true, only the last error that our peer sent us will be returned with\nthe peer's information, rather than the full set of historic errors we have\nstored."
+              }
+            ]
+          },
+          "docs": "lncli: `listpeers`\nListPeers returns a verbose listing of all currently active peers."
+        },
+        {
+          "info": {
+            "name": "lncli: `connect`\nConnectPeer attempts to establish a connection to a remote peer. This is at\nthe networking level, and is used for communication between nodes. This is\ndistinct from establishing a channel with a peer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/peers"
+          },
+          "docs": "lncli: `connect`\nConnectPeer attempts to establish a connection to a remote peer. This is at\nthe networking level, and is used for communication between nodes. This is\ndistinct from establishing a channel with a peer."
+        },
+        {
+          "info": {
+            "name": "SubscribePeerEvents creates a uni-directional stream from the server to\nthe client in which any events relevant to the state of peers are sent\nover. Events include peers going online and offline.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/peers/subscribe"
+          },
+          "docs": "SubscribePeerEvents creates a uni-directional stream from the server to\nthe client in which any events relevant to the state of peers are sent\nover. Events include peers going online and offline."
+        },
+        {
+          "info": {
+            "name": "lncli: `disconnect`\nDisconnectPeer attempts to disconnect one peer from another identified by a\ngiven pubKey. In the case that we currently have a pending or active channel\nwith the target peer, then this action will be not be allowed.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/peers/:pub_key",
+            "params": [
+              {
+                "name": "pub_key",
+                "value": "",
+                "type": "path",
+                "description": "The pubkey of the node to disconnect from"
+              }
+            ]
+          },
+          "docs": "lncli: `disconnect`\nDisconnectPeer attempts to disconnect one peer from another identified by a\ngiven pubKey. In the case that we currently have a pending or active channel\nwith the target peer, then this action will be not be allowed."
+        },
+        {
+          "info": {
+            "name": "lncli: `signmessage`\nSignMessage signs a message with this node's private key. The returned\nsignature string is `zbase32` encoded and pubkey recoverable, meaning that\nonly the message digest and signature are needed for verification.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/signmessage"
+          },
+          "docs": "lncli: `signmessage`\nSignMessage signs a message with this node's private key. The returned\nsignature string is `zbase32` encoded and pubkey recoverable, meaning that\nonly the message digest and signature are needed for verification."
+        },
+        {
+          "info": {
+            "name": "lncli: `stop`\nStopDaemon will send a shutdown request to the interrupt handler, triggering\na graceful shutdown of the daemon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/stop"
+          },
+          "docs": "lncli: `stop`\nStopDaemon will send a shutdown request to the interrupt handler, triggering\na graceful shutdown of the daemon."
+        },
+        {
+          "info": {
+            "name": "lncli: `fwdinghistory`\nForwardingHistory allows the caller to query the htlcswitch for a record of\nall HTLCs forwarded within the target time range, and integer offset\nwithin that time range, for a maximum number of events. If no maximum number\nof events is specified, up to 100 events will be returned. If no time-range\nis specified, then events will be returned in the order that they occured.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/switch"
+          },
+          "docs": "A list of forwarding events are returned. The size of each forwarding event\nis 40 bytes, and the max message size able to be returned in gRPC is 4 MiB.\nAs a result each message can only contain 50k entries. Each response has\nthe index offset of the last entry. The index offset can be provided to the\nrequest to allow the caller to skip a series of records."
+        },
+        {
+          "info": {
+            "name": "lncli: `listchaintxns`\nGetTransactions returns a list describing all the known transactions\nrelevant to the wallet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/transactions",
+            "params": [
+              {
+                "name": "start_height",
+                "value": "",
+                "type": "query",
+                "description": "The height from which to list transactions, inclusive. If this value is\ngreater than end_height, transactions will be read in reverse."
+              },
+              {
+                "name": "end_height",
+                "value": "",
+                "type": "query",
+                "description": "The height until which to list transactions, inclusive. To include\nunconfirmed transactions, this value should be set to -1, which will\nreturn transactions from start_height until the current chain tip and\nunconfirmed transactions. If no end_height is provided, the call will\ndefault to this option."
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to only include transactions relevant to an account."
+              },
+              {
+                "name": "index_offset",
+                "value": "",
+                "type": "query",
+                "description": "The index of a transaction that will be used in a query to determine which\ntransaction should be returned in the response."
+              },
+              {
+                "name": "max_transactions",
+                "value": "",
+                "type": "query",
+                "description": "The maximal number of transactions returned in the response to this query.\nThis value should be set to 0 to return all transactions."
+              }
+            ]
+          },
+          "docs": "lncli: `listchaintxns`\nGetTransactions returns a list describing all the known transactions\nrelevant to the wallet."
+        },
+        {
+          "info": {
+            "name": "lncli: `sendcoins`\nSendCoins executes a request to send coins to a particular address. Unlike\nSendMany, this RPC call only allows creating a single output at a time. If\nneither target_conf, or sat_per_vbyte are set, then the internal wallet will\nconsult its fee model to determine a fee for the default confirmation\ntarget.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/transactions"
+          },
+          "docs": "lncli: `sendcoins`\nSendCoins executes a request to send coins to a particular address. Unlike\nSendMany, this RPC call only allows creating a single output at a time. If\nneither target_conf, or sat_per_vbyte are set, then the internal wallet will\nconsult its fee model to determine a fee for the default confirmation\ntarget."
+        },
+        {
+          "info": {
+            "name": "lncli: `estimatefee`\nEstimateFee asks the chain backend to estimate the fee rate and total fees\nfor a transaction that pays to multiple specified outputs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/transactions/fee",
+            "params": [
+              {
+                "name": "AddrToAmount[string]",
+                "value": "",
+                "type": "query",
+                "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18"
+              },
+              {
+                "name": "target_conf",
+                "value": "",
+                "type": "query",
+                "description": "The target number of blocks that this transaction should be confirmed\nby."
+              },
+              {
+                "name": "min_confs",
+                "value": "",
+                "type": "query",
+                "description": "The minimum number of confirmations each one of your outputs used for\nthe transaction must satisfy."
+              },
+              {
+                "name": "spend_unconfirmed",
+                "value": "",
+                "type": "query",
+                "description": "Whether unconfirmed outputs should be used as inputs for the transaction."
+              },
+              {
+                "name": "coin_selection_strategy",
+                "value": "",
+                "type": "query",
+                "description": "The strategy to use for selecting coins during fees estimation.\n\n - STRATEGY_USE_GLOBAL_CONFIG: Use the coin selection strategy defined in the global configuration\n(lnd.conf).\n - STRATEGY_LARGEST: Select the largest available coins first during coin selection.\n - STRATEGY_RANDOM: Randomly select the available coins during coin selection."
+              }
+            ]
+          },
+          "docs": "When using REST, the `AddrToAmount` map type can be set by appending\n`&AddrToAmount[<address>]=<amount_to_send>` to the URL. Unfortunately this\nmap type doesn't appear in the REST API documentation because of a bug in\nthe grpc-gateway library."
+        },
+        {
+          "info": {
+            "name": "lncli: `sendmany`\nSendMany handles a request for a transaction that creates multiple specified\noutputs in parallel. If neither target_conf, or sat_per_vbyte are set, then\nthe internal wallet will consult its fee model to determine a fee for the\ndefault confirmation target.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/transactions/many"
+          },
+          "docs": "lncli: `sendmany`\nSendMany handles a request for a transaction that creates multiple specified\noutputs in parallel. If neither target_conf, or sat_per_vbyte are set, then\nthe internal wallet will consult its fee model to determine a fee for the\ndefault confirmation target."
+        },
+        {
+          "info": {
+            "name": "SubscribeTransactions creates a uni-directional stream from the server to\nthe client in which any newly discovered transactions relevant to the\nwallet are sent over.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/transactions/subscribe",
+            "params": [
+              {
+                "name": "start_height",
+                "value": "",
+                "type": "query",
+                "description": "The height from which to list transactions, inclusive. If this value is\ngreater than end_height, transactions will be read in reverse."
+              },
+              {
+                "name": "end_height",
+                "value": "",
+                "type": "query",
+                "description": "The height until which to list transactions, inclusive. To include\nunconfirmed transactions, this value should be set to -1, which will\nreturn transactions from start_height until the current chain tip and\nunconfirmed transactions. If no end_height is provided, the call will\ndefault to this option."
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to only include transactions relevant to an account."
+              },
+              {
+                "name": "index_offset",
+                "value": "",
+                "type": "query",
+                "description": "The index of a transaction that will be used in a query to determine which\ntransaction should be returned in the response."
+              },
+              {
+                "name": "max_transactions",
+                "value": "",
+                "type": "query",
+                "description": "The maximal number of transactions returned in the response to this query.\nThis value should be set to 0 to return all transactions."
+              }
+            ]
+          },
+          "docs": "SubscribeTransactions creates a uni-directional stream from the server to\nthe client in which any newly discovered transactions relevant to the\nwallet are sent over."
+        },
+        {
+          "info": {
+            "name": "lncli: `listunspent`\nDeprecated, use walletrpc.ListUnspent instead.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/utxos",
+            "params": [
+              {
+                "name": "min_confs",
+                "value": "",
+                "type": "query",
+                "description": "The minimum number of confirmations to be included."
+              },
+              {
+                "name": "max_confs",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of confirmations to be included."
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to only include outputs belonging to an account."
+              }
+            ]
+          },
+          "docs": "ListUnspent returns a list of all utxos spendable by the wallet with a\nnumber of confirmations between the specified minimum and maximum."
+        },
+        {
+          "info": {
+            "name": "lncli: `verifymessage`\nVerifyMessage verifies a signature over a message and recovers the signer's\npublic key. The signature is only deemed valid if the recovered public key\ncorresponds to a node key in the public Lightning network. The signature\nmust be zbase32 encoded and signed by an active node in the resident node's\nchannel database. In addition to returning the validity of the signature,\nVerifyMessage also returns the recovered pubkey from the signature.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/verifymessage"
+          },
+          "docs": "lncli: `verifymessage`\nVerifyMessage verifies a signature over a message and recovers the signer's\npublic key. The signature is only deemed valid if the recovered public key\ncorresponds to a node key in the public Lightning network. The signature\nmust be zbase32 encoded and signed by an active node in the resident node's\nchannel database. In addition to returning the validity of the signature,\nVerifyMessage also returns the recovered pubkey from the signature."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
