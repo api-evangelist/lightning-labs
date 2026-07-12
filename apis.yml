@@ -37,10 +37,14 @@ apis:
         url: >-
           https://raw.githubusercontent.com/api-evangelist/lightning-labs/refs/heads/main/openapi/lightning-labs-openapi.json
 common:
+  - type: DomainSecurity
+    url: security/lightning-labs-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/lightning-labs-inc
   - type: GitHubOrganization
     url: https://github.com/lightningnetwork
+  - url: https://lightning.engineering/blog/
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
