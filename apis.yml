@@ -37,6 +37,8 @@ apis:
         url: >-
           https://raw.githubusercontent.com/api-evangelist/lightning-labs/refs/heads/main/openapi/lightning-labs-openapi.json
 common:
+  - type: AgenticAccess
+    url: agentic-access/lightning-labs-agentic-access.yml
   - type: DomainSecurity
     url: security/lightning-labs-domain-security.yml
   - type: LinkedIn
