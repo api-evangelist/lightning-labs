@@ -6,9 +6,21 @@ description: >-
   verifiable, non-custodial Lightning-based financial services. We bridge the world of open source software and the
   next-generation of bitcoin financial software.
 kind: contract
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lightning-labs.png
 tags:
   - Bitcoin
   - Crypto
@@ -19,23 +31,17 @@ modified: '2026-05-19'
 url: https://raw.githubusercontent.com/api-evangelist/lightning-labs/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
-  - aid: lightning-labs:lightning-labs
-    name: Lightning Labs LND API
-    description: >-
-      REST API for the Lightning Network Daemon (lnd) by Lightning Labs, providing programmatic access to Lightning
-      Network nodes for sending and receiving Bitcoin payments, channel management, wallet operations, and routing.
-    humanURL: https://lightning.engineering/api-docs/api/lnd/
-    tags:
-      - Bitcoin
-      - Crypto
-      - Lightning Network
-      - Payments
-    properties:
-      - type: Documentation
-        url: https://lightning.engineering/api-docs/api/lnd/
-      - type: OpenAPI
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/lightning-labs/refs/heads/main/openapi/lightning-labs-openapi.json
+- aid: lightning-labs:lightning-labs-lightning-api
+  name: Lightning Labs Lightning API
+  description: The Lightning API from Lightning Labs — 64 operation(s) for lightning.
+  humanURL: https://lightning.engineering/api-docs/api/lnd/
+  tags:
+  - Lightning
+  properties:
+  - type: OpenAPI
+    url: openapi/lightning-labs-lightning-api-openapi.yml
+  - type: Documentation
+    url: https://lightning.engineering/api-docs/api/lnd/
 common:
   - type: AgenticAccess
     url: agentic-access/lightning-labs-agentic-access.yml
