@@ -1,0 +1,14 @@
+{
+  "provider": "lightning-labs",
+  "sources": [
+    "lightning-labs-lightning-api-openapi.yml"
+  ],
+  "outputs": [
+    "lightning-labs-lightning-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
