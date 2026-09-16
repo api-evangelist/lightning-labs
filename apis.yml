@@ -1,10 +1,9 @@
 aid: lightning-labs
 name: Lightning Labs
-description: >-
-  At Lightning Labs, we develop software that powers the Lightning Network. Our open source, secure, and scalable
-  Lightning systems enable users to send and receive money more efficiently than ever before. We also offer a series of
-  verifiable, non-custodial Lightning-based financial services. We bridge the world of open source software and the
-  next-generation of bitcoin financial software.
+description: At Lightning Labs, we develop software that powers the Lightning Network. Our open source,
+  secure, and scalable Lightning systems enable users to send and receive money more efficiently than
+  ever before. We also offer a series of verifiable, non-custodial Lightning-based financial services.
+  We bridge the world of open source software and the next-generation of bitcoin financial software.
 kind: contract
 deliveryModel:
   model: unknown
@@ -33,12 +32,12 @@ position: Consuming
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lightning-labs.png
 tags:
-  - Bitcoin
-  - Crypto
-  - Lightning Network
-  - Payments
+- Bitcoin
+- Crypto
+- Lightning Network
+- Payments
 created: '2024-11-08'
-modified: '2026-05-19'
+modified: '2026-09-16'
 url: https://raw.githubusercontent.com/api-evangelist/lightning-labs/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 apis:
@@ -54,16 +53,18 @@ apis:
   - type: Documentation
     url: https://lightning.engineering/api-docs/api/lnd/
 common:
-  - type: AgenticAccess
-    url: agentic-access/lightning-labs-agentic-access.yml
-  - type: DomainSecurity
-    url: security/lightning-labs-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/lightning-labs-inc
-  - type: GitHubOrganization
-    url: https://github.com/lightningnetwork
-  - url: https://lightning.engineering/blog/
-    type: Blog
+- type: Website
+  url: https://lightning.engineering
+- type: AgenticAccess
+  url: agentic-access/lightning-labs-agentic-access.yml
+- type: DomainSecurity
+  url: security/lightning-labs-domain-security.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/lightning-labs-inc
+- type: GitHubOrganization
+  url: https://github.com/lightningnetwork
+- url: https://lightning.engineering/blog/
+  type: Blog
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
