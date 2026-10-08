@@ -53,6 +53,12 @@ apis:
   - type: Documentation
     url: https://lightning.engineering/api-docs/api/lnd/
 common:
+- type: Plans
+  url: plans/lightning-labs-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/lightning-labs-rate-limits.yml
+- type: FinOps
+  url: finops/lightning-labs-finops.yml
 - type: Website
   url: https://lightning.engineering
 - type: AgenticAccess
